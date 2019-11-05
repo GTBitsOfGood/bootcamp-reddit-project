@@ -1,0 +1,50 @@
+.center {
+  text-align: center;
+}
+
+.post {
+  border: 1px solid black;
+  /* margin: 5px 0px 5px 5px; */
+  margin: 5px;
+  display: flex;
+  padding: 5px;
+}
+
+.header {
+  font-size: large;
+  font-weight:bold;
+}
+
+
+.author {
+  font-size: small;
+  color:grey;
+  /* float: right; */
+  /* margin-left: 5px; */
+}
+
+.comments {
+  /* border: 1px solid black; */
+  margin: 10px 0px 10px 10px;
+}
+
+.arrows {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.arrows button {
+  flex-grow: 1;
+}
+
+.post-body {
+  padding-left: 5px;
+  width:100%;
+  
+}
+
+.button-row button{
+  margin: 2px;
+}
+

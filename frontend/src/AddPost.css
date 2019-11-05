@@ -1,0 +1,39 @@
+.container {
+  border: 1px solid black;
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.flex input {
+  width: 100%;
+  margin-left: 4px;
+}
+
+.long {
+  flex: 2;
+}
+
+.short {
+  flex: 1;
+}
+
+.error {
+  color: red;
+  margin-left: 5px;
+}
+
+p {
+  margin: 4px 0px 4px 0px;;
+}
+
+button {
+  max-width: 100px;
+}
