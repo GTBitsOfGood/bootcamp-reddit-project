@@ -1,7 +1,8 @@
 import React from 'react'
 import './App.css'
-import Post from './Post'
-import AddPost from './AddPost'
+import Post from './components/Post'
+import AddPost from './components/AddPost'
+import SortBy from './components/SelectDateRange'
 
 const App = () => {
   const [posts, setPosts] = React.useState([])
@@ -16,6 +17,16 @@ const App = () => {
     // get posts on startup
     getPosts()
   }, [])
+
+  const getPostsByDate = selectedDateRange => {
+    // get the current date to send to the server (for accuracy)
+    const date = new Date()
+    const dateString = date.toISOString()
+
+    fetch(`/api/posts?dateRange=${selectedDateRange}&currDate=${dateString}`)
+      .then(response => response.json())
+      .then(data => setPosts(data.posts))
+  }
 
   const createPost = postData => {
     fetch('/api/posts', {
@@ -93,6 +104,7 @@ const App = () => {
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
       <AddPost onSubmit={createPost} />
+      <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
         <Post
           key={curr._id}
