@@ -13,15 +13,29 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const Votes = () => {
+    const originalVotes = props.post.upVotes - props.post.downVotes;
+    const [votes, toggle] = React.useState(originalVotes);
+
+    const clickUpVote = () => {
+      if (votes == originalVotes) toggle(originalVotes+1);
+      else toggle(originalVotes);
+    }
+    const clickDownVote = () => {
+      if (votes == originalVotes) toggle(originalVotes-1);
+      else toggle(originalVotes);
+    }
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick = {clickUpVote}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {originalVotes}
           </span>
-          <button>↓</button>
+          <button onClick = {clickDownVote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
