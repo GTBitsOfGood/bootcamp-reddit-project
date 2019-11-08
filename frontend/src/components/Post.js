@@ -33,7 +33,7 @@ const Post = props => {
         <div className="arrows">
           <button onClick = {clickUpVote}>↑</button>
           <span className="center">
-            {originalVotes}
+            {props.post.upVotes - props.post.downVotes}
           </span>
           <button onClick = {clickDownVote}>↓</button>
         </div>
