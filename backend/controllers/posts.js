@@ -95,3 +95,23 @@ module.exports.comment = (req, res, next) => {
       return next()
     })
 }
+
+module.exports.dummyPost = (req, res, next) => {
+  newDate = new Date(req.body.date);
+  const newPost = new Post(req.body);
+  newPost.createdAt = newDate;
+  newPost
+    .save()
+    .then(post => {
+      res.locals.data = { post }
+      res.locals.status = 201
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      res.locals.status = 400
+      return next()
+    })
+}
+
