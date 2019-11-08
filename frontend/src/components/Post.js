@@ -18,12 +18,12 @@ const Post = props => {
   
 
   const clickUpVote = () => {
-    if (votes == originalVotes) toggle(originalVotes+1);
-    else toggle(originalVotes);
+    if (votes>originalVotes) toggle(originalVotes);
+    else toggle(originalVotes+1);
   }
   const clickDownVote = () => {
-    if (votes == originalVotes) toggle(originalVotes-1);
-    else toggle(originalVotes);
+    if (votes<originalVotes) toggle(originalVotes);
+    else toggle(originalVotes-1);
   }
 
   return (
