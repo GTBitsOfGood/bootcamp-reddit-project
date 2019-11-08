@@ -115,3 +115,34 @@ module.exports.dummyPost = (req, res, next) => {
     })
 }
 
+module.exports.dummyExample = (req, res, next) => {
+  const createdAt = req.body.createdAt;
+  if (createdAt === undefined) {
+    res.locals.error = {error: "Expected createdAt in body"}
+    res.locals.status = 400;
+    return next();
+  }
+  //TODO: Have a check to make sure the date passed in is valid
+  const dummyPost = new Post({
+    author: "Unown",
+    title: "Good List",
+    text: "Bootcampers"
+  });
+  dummyPost.save().then(post => {
+    let createdAtDate = new Date(createdAt);
+    post.createdAt = createdAtDate;
+    return post.save();
+  })
+  .then(post => {
+    res.locals.data = { post };
+    res.locals.status = 201;
+    return next();
+  })
+  .catch(err => {
+    console.error(err)
+    res.locals.error = { error: err.message }
+    res.locals.status = 400
+    return next()
+  })
+
+}

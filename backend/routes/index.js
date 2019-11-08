@@ -28,6 +28,8 @@ router.post("/posts", controllers.posts.store);
 
 router.post("/posts/CreateDummy", controllers.posts.dummyPost);
 
+router.post("/posts/AndreExampleDummy", controllers.posts.dummyExample);
+
 /**
  * Get a specific post.
  * @route GET /posts/:id
