@@ -48,6 +48,41 @@ module.exports.store = (req, res, next) => {
     })
 }
 
+module.exports.dummy = (req, res, next) => {
+  const createdAt = req.body.createdAt;
+  
+  if (createdAt === undefined) {
+    res.locals.error = { error: "Expected createdAt in body."}
+    res.locals.status = 400
+    return next()
+  }
+
+  const dummyPost = new Post({
+    author: "MEB",
+    title: "Date Test",
+    text: "Test success!"
+  });
+
+  dummyPost
+    .save()
+    .then(post => {
+      let date = new Date(createdAt)
+      post.createdAt = date.toISOString()
+      return post.save()
+  })
+  .then(post => {
+    res.locals.data = { post }
+    res.locals.status = 201
+    return next()
+  })
+  .catch(err => {
+    console.error(err)
+    res.locals.error = { error: err.message }
+    res.locals.status = 400
+    return next()
+  })
+}
+
 module.exports.update = (req, res, next) => {
   Post.findOneAndUpdate({ _id: req.params.id }, req.body, {
     runValidators: true,
