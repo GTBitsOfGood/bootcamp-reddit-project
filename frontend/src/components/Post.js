@@ -15,24 +15,32 @@ const Post = props => {
 
   const originalVotes = props.post.upVotes - props.post.downVotes;
   const [votes, toggle] = React.useState(originalVotes);
-  
-  const [counterUp, toggleCountUp] = React.useState(props.post.up);
-  const [counterDown, toggleCounterDown] = React.useState(0);
 
 
   const clickUpVote = () => {
     if (votes>originalVotes) {
       toggle(originalVotes);
-      toggleCountUp(counterUp);
-    }
-    else {
+      props.updateUpVote(false);
+    } else {
+      if (votes<originalVotes) {
+        props.updateDownVote(false);
+      }
       toggle(originalVotes+1);
-      toggleCounterDown()
+      props.updateUpVote(true);
     }
   }
   const clickDownVote = () => {
-    if (votes<originalVotes) toggle(originalVotes);
-    else toggle(originalVotes-1);
+    if (votes<originalVotes) {
+      toggle(originalVotes);
+      props.updateDownVote(false);
+    }
+    else { 
+      if (votes>originalVotes) {
+        props.updateUpVote(false);
+      }
+      toggle(originalVotes-1);
+      props.updateDownVote(true);
+    }
   }
 
   const updateVoteColor = () => {
@@ -40,8 +48,6 @@ const Post = props => {
     else if (votes<originalVotes) return 'blue';
     else return 'center';
   }
-
-
 
   return (
     <>
