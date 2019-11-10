@@ -16,22 +16,39 @@ const Post = props => {
   const originalVotes = props.post.upVotes - props.post.downVotes;
   const [votes, toggle] = React.useState(originalVotes);
   
+  const [counterUp, toggleCountUp] = React.useState(props.post.up);
+  const [counterDown, toggleCounterDown] = React.useState(0);
+
 
   const clickUpVote = () => {
-    if (votes>originalVotes) toggle(originalVotes);
-    else toggle(originalVotes+1);
+    if (votes>originalVotes) {
+      toggle(originalVotes);
+      toggleCountUp(counterUp);
+    }
+    else {
+      toggle(originalVotes+1);
+      toggleCounterDown()
+    }
   }
   const clickDownVote = () => {
     if (votes<originalVotes) toggle(originalVotes);
     else toggle(originalVotes-1);
   }
 
+  const updateVoteColor = () => {
+    if (votes>originalVotes) return 'orange';
+    else if (votes<originalVotes) return 'blue';
+    else return 'center';
+  }
+
+
+
   return (
     <>
       <section className="post">
         <div className="arrows">
           <button onClick={clickUpVote}>↑</button>
-          <span className="center">
+          <span className= {updateVoteColor()}>
             {votes}
           </span>
           <button onClick={clickDownVote}>↓</button>

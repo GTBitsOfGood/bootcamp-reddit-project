@@ -103,6 +103,10 @@ const App = () => {
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      {/* <section>      
+        <p>{upVoteCount}</p>
+        <p1>{downVoteCount}</p1>
+      </section> */}
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
