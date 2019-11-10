@@ -100,9 +100,29 @@ const App = () => {
     })
   }
 
+  const [upVotes, updateUpVote] = React.useState(0)
+  const [downVotes, updateDownVote] = React.useState(0)
+
+  const incrementUpVote = () => {
+    updateUpVote(upVotes + 1)
+  }
+  const decrementUpVote = () => {
+    updateUpVote(upVotes - 1)
+  }
+  const incrementDownVote = () => {
+    updateDownVote(downVotes + 1)
+  }
+  const decrementDownVote = () => {
+    updateDownVote(downVotes - 1)
+  }
+
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section>
+        <p>Upvotes: {upVotes}</p>
+        <p>Downvotes: {downVotes}</p>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +135,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          incrementUp = {incrementUpVote}
+          incrementDown = {incrementDownVote}
+          decrementUp = {decrementUpVote}
+          decrementDown = {decrementDownVote}
         />
       ))}
     </>
