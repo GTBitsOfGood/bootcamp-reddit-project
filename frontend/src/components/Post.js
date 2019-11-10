@@ -13,15 +13,51 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const originalVotes = props.post.upVotes - props.post.downVotes;
+  const [votes, toggle] = React.useState(originalVotes);
+
+
+  const clickUpVote = () => {
+    if (votes>originalVotes) {
+      toggle(originalVotes);
+      props.updateUpVote(false);
+    } else {
+      if (votes<originalVotes) {
+        props.updateDownVote(false);
+      }
+      toggle(originalVotes+1);
+      props.updateUpVote(true);
+    }
+  }
+  const clickDownVote = () => {
+    if (votes<originalVotes) {
+      toggle(originalVotes);
+      props.updateDownVote(false);
+    }
+    else { 
+      if (votes>originalVotes) {
+        props.updateUpVote(false);
+      }
+      toggle(originalVotes-1);
+      props.updateDownVote(true);
+    }
+  }
+
+  const updateVoteColor = () => {
+    if (votes>originalVotes) return 'orange';
+    else if (votes<originalVotes) return 'blue';
+    else return 'center';
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
-          <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+          <button onClick={clickUpVote}>↑</button>
+          <span className= {updateVoteColor()}>
+            {votes}
           </span>
-          <button>↓</button>
+          <button onClick={clickDownVote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
