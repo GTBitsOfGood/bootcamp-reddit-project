@@ -8,20 +8,41 @@ const Post = props => {
 
   const toggleReply = () => setReplyOpen(!replyOpen)
 
+  const origVotes = props.post.upVotes - props.post.downVotes;
+  const [votes, setVotes] = React.useState(origVotes)
+
+  const upvote = () => {
+    if (votes == origVotes || votes < origVotes) { // post hasn't been upvoted yet
+      setVotes(origVotes + 1)
+    } else { // post has already been upvoted; reset it to original votes
+      setVotes(origVotes)
+    }
+  }
+
+  const downvote = () => {
+    if (votes == origVotes || votes > origVotes) { // post hasn't been downvoted yet
+      setVotes(origVotes - 1)
+    } else { // post has already been downvoted
+      setVotes(origVotes)
+    }
+  }
+  
   const saveComment = commentData => {
     setReplyOpen(false)
     props.onComment(props.post._id, commentData)
   }
-
+  
+  // add onClick to two arrow buttons
+  // changed props.post.upVotes - props.post.downVotes to votes variable
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={upvote}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {votes}
           </span>
-          <button>↓</button>
+          <button onClick={downvote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
