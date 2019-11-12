@@ -12,7 +12,9 @@ const Post = props => {
   const [votes, setVotes] = React.useState(origVotes)
 
   const upvote = () => {
-    if (votes == origVotes || votes < origVotes) { // post hasn't been upvoted yet
+    if (votes == origVotes) { // post hasn't been upvoted or downvoted yet
+      setVotes(origVotes + 1)
+    } else if (votes < origVotes) { // post has been downvoted
       setVotes(origVotes + 1)
     } else { // post has already been upvoted; reset it to original votes
       setVotes(origVotes)
@@ -20,7 +22,9 @@ const Post = props => {
   }
 
   const downvote = () => {
-    if (votes == origVotes || votes > origVotes) { // post hasn't been downvoted yet
+    if (votes == origVotes) { // post hasn't been upvoted or downvoted yet
+      setVotes(origVotes - 1)
+    } else if (votes > origVotes) { // post has been upvoted
       setVotes(origVotes - 1)
     } else { // post has already been downvoted
       setVotes(origVotes)
