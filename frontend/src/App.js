@@ -100,9 +100,35 @@ const App = () => {
     })
   }
 
+  // declares vars for upvote/downvote counters
+  const [upvoteCounter, setUCounter] = React.useState(0)
+  const [downvoteCounter, setDCounter] = React.useState(0)
+
+  // change upvote counter based on if it should increase or decrease
+  const updateUpvote = (shouldIncrease) => {
+    if (shouldIncrease) {
+      setUCounter(upvoteCounter + 1)
+    } else {
+      setUCounter(upvoteCounter - 1)
+    }
+  }
+
+  // change downvote counter based on if it should increase or decrease
+  const updateDownvote = (shouldIncrease) => {
+    if (shouldIncrease) {
+      setDCounter(downvoteCounter + 1)
+    } else {
+      setDCounter(downvoteCounter - 1)
+    }
+  }
+
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section>
+        <p>Current Upvotes: {upvoteCounter}</p>
+        <p>Current Downvotes: {downvoteCounter}</p>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +141,8 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          updateUpvote = {updateUpvote}
+          updateDownvote = {updateDownvote}
         />
       ))}
     </>
