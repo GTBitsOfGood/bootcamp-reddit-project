@@ -1,19 +1,55 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
-  Post.find()
-    .populate('comments')
-    .sort('-createdAt')
-    .then(posts => {
-      res.locals.data = { posts }
-      res.locals.status = 200
-      return next()
-    })
-    .catch(err => {
-      console.error(err)
-      res.locals.error = { error: err.message }
-      return next()
-    })
+  if (req.query.dateRange != undefined) {
+    let dateRange = req.query.dateRange
+    let oldest = new Date(req.query.currDate)
+    let newest = new Date(req.query.currDate)
+    if (dateRange == 'Past week') {
+      oldest = oldest.setDate(oldest.getDate() - 7)
+    } else if (dateRange == 'Past month') {
+      oldest = oldest.setMonth(oldest.getMonth() - 1)
+    } else if (dateRange == 'Past year') {
+      oldest = oldest.setFullYear(oldest.getFullYear() - 1)
+    } else if (dateRange == 'A year ago') {
+      newest = newest.setFullYear(newest.getFullYear() - 1)
+      oldest = oldest.setFullYear(oldest.getFullYear() - 10)
+    } else if (dateRange == 'Ancient times') {
+      console.log("right range")
+      newest = newest.setFullYear(newest.getFullYear() - 10)
+      oldest = oldest.setFullYear(0)
+    }
+    Post.find({createdAt: {'$lte': newest, '$gte': oldest}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+
+  } else {
+    console.log("wrong logic")
+    Post.find()
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 201
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        res.locals.status = 400
+        return next()
+      })
+  }
 }
 
 module.exports.get = (req, res, next) => {

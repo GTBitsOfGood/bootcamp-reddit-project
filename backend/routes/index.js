@@ -14,7 +14,7 @@ router.get("/", (req, res) => res.redirect("/api-docs"));
  */
 router.get("/posts", controllers.posts.index);
 
-router.post("/posted", controllers.posts.posted);
+router.get("posts/:dateRange/:currDate", controllers.posts.index)
 
 /**
  * Create a new post.
@@ -27,6 +27,8 @@ router.post("/posted", controllers.posts.posted);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.post("/posts", controllers.posts.store);
+
+router.post("/posted", controllers.posts.posted);
 
 /**
  * Get a specific post.
