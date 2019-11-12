@@ -142,7 +142,7 @@ const App = () => {
           onCommentEdit={editComment}
           onSubComment={createSubComment}
           updateUpvote = {updateUpvote}
-          updateDownvote = {updateUpvote}
+          updateDownvote = {updateDownvote}
         />
       ))}
     </>

@@ -14,20 +14,28 @@ const Post = props => {
   const upvote = () => {
     if (votes == origVotes) { // post hasn't been upvoted or downvoted yet
       setVotes(origVotes + 1)
+      props.updateUpvote(true)
     } else if (votes < origVotes) { // post has been downvoted
       setVotes(origVotes + 1)
+      props.updateUpvote(true)
+      props.updateDownvote(false)
     } else { // post has already been upvoted; reset it to original votes
       setVotes(origVotes)
+      props.updateUpvote(false)
     }
   }
 
   const downvote = () => {
     if (votes == origVotes) { // post hasn't been upvoted or downvoted yet
       setVotes(origVotes - 1)
+      props.updateDownvote(true)
     } else if (votes > origVotes) { // post has been upvoted
       setVotes(origVotes - 1)
+      props.updateDownvote(true)
+      props.updateUpvote(false)
     } else { // post has already been downvoted
       setVotes(origVotes)
+      props.updateDownvote(false)
     }
   }
   
