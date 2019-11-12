@@ -11,6 +11,7 @@ require('dotenv').config()
 
 const app = express()
 app.use(cors())
+app.listen(3001)
 
 // Generate API docs
 const expressSwagger = swaggerUiGenerator(app)

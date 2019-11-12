@@ -95,3 +95,30 @@ module.exports.comment = (req, res, next) => {
       return next()
     })
 }
+
+module.exports.posted = (req, res, next) => {
+  //console.log(req.body.createdAt)
+  
+  let date = new Date(req.body.createdAt)
+  console.log(date.toISOString())
+
+  let post = new Post({
+    author: "Brandon",
+    text: "Do crabs think fish can fly?",
+    title: "Stay Woke",
+    createdAt: date.toISOString(),
+  })
+  post
+  .save()
+  .then(post => {
+    res.locals.data = { post };
+    res.locals.status = 201;
+    return next();
+  })
+  .catch(err => {
+    console.error(err);
+    res.locals.error = { error: err.message };
+    res.locals.status = 400;
+    return next();
+  });
+}
