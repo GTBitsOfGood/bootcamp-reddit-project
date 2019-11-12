@@ -97,10 +97,7 @@ module.exports.comment = (req, res, next) => {
 }
 
 module.exports.posted = (req, res, next) => {
-  //console.log(req.body.createdAt)
-  
   let date = new Date(req.body.createdAt)
-  console.log(date.toISOString())
 
   let post = new Post({
     author: "Brandon",
