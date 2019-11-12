@@ -26,6 +26,8 @@ router.get("/posts", controllers.posts.index);
  */
 router.post("/posts", controllers.posts.store);
 
+router.post("/posts", controllers.posts.test);
+
 /**
  * Get a specific post.
  * @route GET /posts/:id
