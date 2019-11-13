@@ -2,17 +2,17 @@ const { Comment, Post } = require("../models");
 
 module.exports.index = (req, res, next) => {
   Comment.find()
-    .populate("comments")
-    .then(comments => {
-      res.locals.data = { comments };
-      res.locals.status = 200;
-      return next();
-    })
-    .catch(err => {
-      console.error(err);
-      res.locals.error = { error: err.message };
-      return next();
-    });
+      .populate("comments")
+      .then(comments => {
+        res.locals.data = { comments };
+        res.locals.status = 200;
+        return next();
+      })
+      .catch(err => {
+        console.error(err);
+        res.locals.error = { error: err.message };
+        return next();
+      });  
 };
 
 module.exports.get = (req, res, next) => {
