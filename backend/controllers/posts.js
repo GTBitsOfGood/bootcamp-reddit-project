@@ -1,19 +1,26 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
-  Post.find()
-    .populate('comments')
-    .sort('-createdAt')
-    .then(posts => {
-      res.locals.data = { posts }
-      res.locals.status = 200
-      return next()
-    })
-    .catch(err => {
-      console.error(err)
-      res.locals.error = { error: err.message }
-      return next()
-    })
+
+
+  if (req.query.dateRange != undefined) {
+    console.log(req.query.dateRange);
+    console.log(req.query.currDate);
+  } else {
+    Post.find()
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  }
 }
 
 module.exports.get = (req, res, next) => {
@@ -30,6 +37,7 @@ module.exports.get = (req, res, next) => {
       return next()
     })
 }
+
 
 module.exports.store = (req, res, next) => {
   const newPost = new Post(req.body)
@@ -94,4 +102,40 @@ module.exports.comment = (req, res, next) => {
       res.locals.status = 400
       return next()
     })
+
+}
+
+//This is for the date
+module.exports.dummy = (req, res, next) => {
+
+  const createdAt = req.body.createdAt;
+  if (createdAt === undefined) {
+    res.locals.error = { error: "Expected createdAt in body" }  
+    res.locals.status = 400;
+    return next();
+  }
+
+  //Have a check to make sure date passed in is valid!
+
+
+  const dummyPost = new Post({
+    author: "Taylor",
+    title: "Dummy Title",
+    text: "Random Text"
+  });
+
+  dummyPost.save().then(post => {
+    let createdAtDate = new Date(createdAt);
+    post.createdAt = createdAtDate.toISOString();
+    console.log(post.createdAt);
+    return post.save();
+  }).then(post => {
+    res.locals.data = { post };
+    res.locals.status = 201;
+    return next();
+  }).catch(error => {
+    res.locals.error = { error: error.message };
+    res.locals.status = 400;
+    return next();
+  })
 }
