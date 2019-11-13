@@ -100,6 +100,22 @@ const App = () => {
     })
   }
 
+
+  const [upvotes, setUVCounter] = React.useState(0)
+  let x=0
+  posts.forEach(post => (x= upvotes + post.upVotes))
+
+  const [downvotes, setDVCounter] = React.useState(0)
+  let y=0
+  
+  posts.forEach(post => (y = downvotes + post.downVotes))
+
+  const updateCounter = () => {setUVCounter(1+upVotes)}
+
+  const updateCounter1 = () => {setUVCounter(1+downVotes)}
+
+  }
+
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
@@ -115,10 +131,12 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          onUpVote={setUVCounter}
+          onDownVote={setDVCounter}
         />
       ))}
     </>
   )
-}
+
 
 export default App
