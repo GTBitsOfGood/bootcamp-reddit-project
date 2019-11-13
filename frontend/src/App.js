@@ -5,6 +5,7 @@ import AddPost from './components/AddPost'
 import SortBy from './components/SelectDateRange'
 
 const App = () => {
+  
   const [posts, setPosts] = React.useState([])
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
@@ -99,10 +100,31 @@ const App = () => {
       getPosts()
     })
   }
+  
+  //PAGE ENGAGEMENT CODE
+  const [upvotes, setUV] = React.useState(0);
+  const [downvotes, setDV] = React.useState(0);
+
+  const updateUV = () => {
+    setUV(upvotes + 1)
+  }
+
+  const updateDV = () => {
+    setDV(downvotes + 1)
+  }
+
+  const removeUV = () => {
+    setUV(upvotes - 1)
+  }
+
+  const removeDV = () => {
+    setDV(downvotes - 1)
+  }
 
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section><p>Upvotes: {upvotes} </p><br></br><p>Downvotes: {downvotes} </p><br></br></section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +137,11 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          //PAGE ENGAGEMENT CODE
+          updateUV={updateUV}
+          updateDV={updateDV}
+          removeUV={removeUV}
+          removeDV={removeDV}
         />
       ))}
     </>

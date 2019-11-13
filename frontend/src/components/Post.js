@@ -6,22 +6,55 @@ import './Post.css'
 const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
 
-  const toggleReply = () => setReplyOpen(!replyOpen)
+  const toggleReply = () => {
+    setReplyOpen(!replyOpen)
+  }
 
   const saveComment = commentData => {
     setReplyOpen(false)
     props.onComment(props.post._id, commentData)
   }
 
+  const originalVotes = props.post.upVotes - props.post.downVotes;
+
+  //upvote downvote & toggle
+  const [newVotes, setNV] = React.useState(originalVotes);
+
+  const clickUV = () => {
+    
+    const isUpVoted = (newVotes > originalVotes);
+    if (isUpVoted) {
+      setNV(originalVotes)
+      props.removeUV()
+    } else {
+      setNV(originalVotes + 1)
+      props.updateUV()
+    }
+  }
+
+  const clickDV = () => {
+    props.updateDV()
+    props.removeDV()
+    const isDownVoted = (newVotes < originalVotes);
+    if (isDownVoted) {
+      setNV(originalVotes)
+      props.removeDV()
+    } else {
+      setNV(originalVotes - 1)
+      props.updateDV()
+    }
+  }
+  
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={clickUV}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {newVotes}
           </span>
-          <button>↓</button>
+          <button onClick={clickDV}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
