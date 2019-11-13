@@ -48,3 +48,10 @@
   margin: 2px;
 }
 
+.downvote {
+  color: blue;
+}
+
+.upvote {
+  color: orange;
+}

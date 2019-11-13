@@ -13,15 +13,33 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const originalVotes = props.post.upVotes - props.post.downVotes
+
+  const [newVotes, setNewVotes] = React.useState(originalVotes)
+
+  const clickUpVote = () => {
+    setNewVotes(originalVotes+=1)
+  }
+
+  const clickDownVote = () => {
+    setNewVotes(originalVotes-=1)
+  }
+
+  const notVoted = (newVotes===originalVotes)
+
+  const upButtonSelected = (newVotes>originalVotes)
+
+  const downButtonSelected = (newVotes<originalVotes)
+  
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={clickUpVote} onClick={updateCounter} class={upButtonSelected ? "" : "upvote"}>↑</button>
           <span className="center">
             {props.post.upVotes - props.post.downVotes}
           </span>
-          <button>↓</button>
+          <button onClick={clickDownVote} onClick={updateCounter1} class={downButtonSelected ? "" : "downvote"}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
