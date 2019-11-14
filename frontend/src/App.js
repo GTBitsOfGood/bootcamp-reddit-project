@@ -4,6 +4,7 @@ import Post from './components/Post'
 import AddPost from './components/AddPost'
 import SortBy from './components/SelectDateRange'
 
+
 const App = () => {
   const [posts, setPosts] = React.useState([])
   const headers = { 'Content-Type': 'application/json' }
@@ -99,10 +100,31 @@ const App = () => {
       getPosts()
     })
   }
+  const [upvote_clicks, set_upvote_clicks] = React.useState(0)
+  const [downvote_clicks, set_downvote_clicks] = React.useState(0)
+
+  const upvote = (toggled) => {
+    if (toggled) {
+      set_upvote_clicks(upvote_clicks + 1)
+    }
+    else {
+      set_upvote_clicks(upvote_clicks - 1)
+    }
+  }
+  const downvote = (toggled) => {
+    if (toggled) {
+      set_downvote_clicks(downvote_clicks + 1)
+    }
+    else{
+      set_downvote_clicks(downvote_clicks - 1)
+    }
+  }
 
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <p>Upvote Counter: {upvote_clicks}</p>
+      <p>Downvote Counter: {downvote_clicks}</p>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,10 +137,11 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          onUpvote = {upvote}
+          onDownvote = {downvote}
         />
       ))}
     </>
   )
 }
-
 export default App
