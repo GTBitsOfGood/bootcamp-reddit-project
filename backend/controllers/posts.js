@@ -2,10 +2,109 @@ const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
 
-
   if (req.query.dateRange != undefined) {
-    console.log(req.query.dateRange);
-    console.log(req.query.currDate);
+    if (req.query.dateRange === "Past week") {
+
+      let newestDate = new Date(req.query.currDate);
+      let oldestDate = new Date(req.query.currDate);
+      oldestDate.setDate(newestDate.getDate() - 7);
+
+      Post.find({createdAt: {$gte: oldestDate, $lte: newestDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+
+    } else if (req.query.dateRange === "Past month") {
+
+      let currentDate = new Date(req.query.currDate);
+      let monthAgo = new Date(req.query.currDate);
+      monthAgo.setDate(0);
+      console.log(monthAgo);
+      console.log(currentDate);
+
+      Post.find({createdAt: {$gte: monthAgo, $lte: currentDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+
+    } else if (req.query.dateRange === "Past year") {
+
+      let currentDate = new Date(req.query.currDate);
+      let yearAgo = new Date(req.query.currDate);
+      yearAgo.setFullYear(currentDate.getFullYear() - 1);
+
+      Post.find({createdAt: {$gte: yearAgo, $lte: currentDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+
+
+
+    } else if (req.query.dateRange === "A year ago") {
+
+      let yearAgo = new Date(req.query.currDate);
+      yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+
+      Post.find({createdAt: {$lte: yearAgo}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+
+    } else if (req.query.dateRange === "Ancient times") {
+
+      let decadeAgo = new Date(req.query.currDate);
+      decadeAgo.setFullYear(decadeAgo.getFullYear() - 10);
+
+      Post.find({createdAt: {$lte: decadeAgo}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+    }
   } else {
     Post.find()
       .populate('comments')
