@@ -26,6 +26,12 @@ router.get("/posts", controllers.posts.index);
  */
 router.post("/posts", controllers.posts.store);
 
+router.post("/posts/CreateDummy", controllers.posts.dummyPost);
+
+router.post("/posts/AndreExampleDummy", controllers.posts.dummyExample);
+
+router.get("/posts/:dateRange")
+
 /**
  * Get a specific post.
  * @route GET /posts/:id
