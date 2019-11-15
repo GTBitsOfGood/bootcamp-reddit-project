@@ -4,36 +4,34 @@ module.exports.index = (req, res, next) => {
   const dateRange = req.query.dateRange;
   const currDate = new Date(req.query.currDate);
   if(dateRange != undefined) {
-    console.log("dateRange = " + dateRange);
-    console.log("currDate = " + currDate);
-    if(dateRange==="Past week") {
+    if(dateRange === "Past week") {
       query = {
         "createdAt" : {
           $lt: currDate, 
           $gte: new Date(currDate.getTime() - (7 * 24 * 60 * 60 * 1000))
         }
       }
-    } else if (dateRange==="Past month") {
+    } else if (dateRange === "Past month") {
       query = {
         "createdAt" : {
           $lt: currDate, 
           $gte: new Date(currDate.getTime() - (31 * 24 * 60 * 60 * 1000))
         }
       }
-    } else if (dateRange==="Past year") {
+    } else if (dateRange === "Past year") {
       query = {
         "createdAt" : {
           $lt: currDate, 
           $gte: new Date(currDate.getTime() - (366 * 24 * 60 * 60 * 1000))
         }
       }
-    } else if (dateRange==="A year ago") {
+    } else if (dateRange === "A year ago") {
       query = {
         "createdAt" : {
           $lte: new Date(currDate.getTime() - (365 * 24 * 60 * 60 * 1000))
         }
       }
-    } else if (dateRange==="Ancient times") {
+    } else if (dateRange === "Ancient times") {
       query = {
         "createdAt" : {
           $lte: new Date(currDate.getTime() - (3650 * 24 * 60 * 60 * 1000))
@@ -54,7 +52,6 @@ module.exports.index = (req, res, next) => {
       return next()
     })
   } else {
-    console.log("fallback");
     Post.find()
     .populate('comments')
     .sort('-createdAt')
