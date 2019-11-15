@@ -1,7 +1,46 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
-  Post.find()
+  const dateRange = req.query.dateRange;
+  const currDate = new Date(req.query.currDate);
+  if(dateRange != undefined) {
+    console.log("dateRange = " + dateRange);
+    console.log("currDate = " + currDate);
+    if(dateRange==="Past week") {
+      query = {
+        "createdAt" : {
+          $lt: currDate, 
+          $gte: new Date(currDate.getTime() - (7 * 24 * 60 * 60 * 1000))
+        }
+      }
+    } else if (dateRange==="Past month") {
+      query = {
+        "createdAt" : {
+          $lt: currDate, 
+          $gte: new Date(currDate.getTime() - (31 * 24 * 60 * 60 * 1000))
+        }
+      }
+    } else if (dateRange==="Past year") {
+      query = {
+        "createdAt" : {
+          $lt: currDate, 
+          $gte: new Date(currDate.getTime() - (366 * 24 * 60 * 60 * 1000))
+        }
+      }
+    } else if (dateRange==="A year ago") {
+      query = {
+        "createdAt" : {
+          $lte: new Date(currDate.getTime() - (365 * 24 * 60 * 60 * 1000))
+        }
+      }
+    } else if (dateRange==="Ancient times") {
+      query = {
+        "createdAt" : {
+          $lte: new Date(currDate.getTime() - (3650 * 24 * 60 * 60 * 1000))
+        }
+      }
+    }
+    Post.find(query)
     .populate('comments')
     .sort('-createdAt')
     .then(posts => {
@@ -14,6 +53,23 @@ module.exports.index = (req, res, next) => {
       res.locals.error = { error: err.message }
       return next()
     })
+  } else {
+    console.log("fallback");
+    Post.find()
+    .populate('comments')
+    .sort('-createdAt')
+    .then(posts => {
+      res.locals.data = { posts }
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    })
+  }
+  
 }
 
 module.exports.get = (req, res, next) => {
