@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './App.css'
 import Post from './components/Post'
 import AddPost from './components/AddPost'
@@ -100,9 +100,33 @@ const App = () => {
     })
   }
 
+  const [upvoteCounter, setUpvoteCounter] = useState(0);
+  const [downvoteCounter, setDownVoteCounter] = useState(0)
+
+  const upVote = (shouldIncrease) => {
+
+    if (shouldIncrease) {
+      setUpvoteCounter(upvoteCounter + 1);
+    } else {
+      setUpvoteCounter(upvoteCounter - 1);
+    }
+  };
+
+  const downVote = (shouldIncrease) => {
+
+    if (shouldIncrease) {
+      setDownVoteCounter(downvoteCounter + 1);
+    } else {
+      setDownVoteCounter(downvoteCounter - 1);
+    }
+  };
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section>
+        <h5>Up Vote Engagement: {upvoteCounter}</h5>
+        <h5>Down Vote Engagement: {downvoteCounter}</h5>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +139,8 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          upVote={upVote}
+          downVote={downVote}
         />
       ))}
     </>

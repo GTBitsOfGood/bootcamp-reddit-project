@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Comment from './Comment'
 import AddComment from './AddComment'
 import './Post.css'
@@ -6,6 +6,37 @@ import './Post.css'
 const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
 
+  const origVote = props.post.upVotes - props.post.downVotes;
+
+  const [votes, setVote] = useState(origVote);
+
+  const upvote = () => {
+    if (votes === origVote) {
+      props.upVote(true);
+      setVote(origVote + 1);
+    } else if (votes < origVote) {
+      setVote(origVote + 1);
+      props.upVote(true);
+      props.downVote(false);
+    } else {
+      setVote(origVote);
+      props.upVote(false);
+    }
+  };
+
+  const downVote = () => {
+    if (votes === origVote) {
+      setVote(origVote - 1);
+      props.downVote(true)
+    } else if (votes > origVote) {
+      setVote(origVote - 1);
+      props.upVote(false);
+      props.downVote(true);
+    } else {
+      setVote(origVote);
+      props.downVote(false);
+    }
+  };
   const toggleReply = () => setReplyOpen(!replyOpen)
 
   const saveComment = commentData => {
@@ -17,11 +48,11 @@ const Post = props => {
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={upvote}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {votes}
           </span>
-          <button>↓</button>
+          <button onClick={downVote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
@@ -31,7 +62,7 @@ const Post = props => {
             <button onClick={() => props.onDelete(props.post._id)}>
               Delete
             </button>
-            <button onClick={toggleReply}>Reply</button>​
+            <button onClick={toggleReply}>Reply</button>
             {replyOpen && (
               <AddComment
                 onSubmit={saveComment}
