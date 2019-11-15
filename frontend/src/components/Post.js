@@ -15,6 +15,7 @@ const Post = props => {
   const upvote = () => {
       if (newVotes > originalVotes) {
           setNewVotes(originalVotes)
+          props.onUpvote(false)
       } else {
           setNewVotes(originalVotes + 1)
           props.onUpvote(true)
@@ -24,6 +25,7 @@ const Post = props => {
   const downvote = () => {
       if (newVotes < originalVotes) {
           setNewVotes(originalVotes)
+          props.onDownvote(false)
      } else {
           setNewVotes(originalVotes - 1)
           props.onDownvote(true)
