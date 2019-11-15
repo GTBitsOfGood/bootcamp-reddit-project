@@ -6,6 +6,48 @@ import './Post.css'
 const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
 
+  const [currentVote, updateVote] = React.useState(0)
+  const [upVote, toggleUpVote] = React.useState(false)
+  const [downVote, toggleDownVote] = React.useState(false)
+
+  const updateUpVote = () => {
+    let increment = 0
+    if (downVote) {
+      toggleDownVote(false)
+      props.decrementDown()
+      increment += 1
+    }
+    if (upVote) {
+      toggleUpVote(false)
+      props.decrementUp()
+      updateVote(currentVote - 1)
+    } else {
+      toggleUpVote(true)
+      increment += 1
+      props.incrementUp()
+      updateVote(currentVote + increment)
+    }
+  }
+
+  const updateDownVote = () => {
+    let decrement = 0
+    if (upVote) {
+      toggleUpVote(false)
+      props.decrementUp()
+      decrement -= 1
+    }
+    if (downVote) {
+      toggleDownVote(false)
+      props.decrementDown()
+      updateVote(currentVote + 1)
+    } else {
+      toggleDownVote(true)
+      decrement -= 1
+      props.incrementDown()
+      updateVote(currentVote + decrement)
+    }
+  }
+
   const toggleReply = () => setReplyOpen(!replyOpen)
 
   const saveComment = commentData => {
@@ -17,11 +59,11 @@ const Post = props => {
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={updateUpVote}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {/* {props.post.upVotes - props.post.downVotes} */currentVote}
           </span>
-          <button>↓</button>
+          <button onClick={updateDownVote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
