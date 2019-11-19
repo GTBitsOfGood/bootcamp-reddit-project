@@ -6,6 +6,12 @@ import SortBy from './components/SelectDateRange'
 
 const App = () => {
   const [posts, setPosts] = React.useState([])
+  var [upVotes, updateUpVote] = React.useState(0);
+  var [downVotes, updateDownVote] = React.useState(0);
+  
+  const toggleUpVoted = (e) => updateUpVote(upVotes + e)
+  const toggleDownVoted = (e) => updateDownVote(downVotes + e)
+
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
     fetch('/api/posts')
@@ -103,6 +109,13 @@ const App = () => {
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <div class = "contains-counter">
+        <section class="newFeature">
+          <h3><strong>Upvote and Downvote Counter</strong></h3>
+          <p>Upvotes: {upVotes}</p>
+          <p>Downvotes: {downVotes}</p>
+        </section>
+      </div>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,7 +128,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          funct1={toggleUpVoted}
+          funct2={toggleDownVoted}
         />
+
       ))}
     </>
   )
