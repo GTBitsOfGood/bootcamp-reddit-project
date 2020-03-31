@@ -6,6 +6,27 @@ import SortBy from './components/SelectDateRange'
 
 const App = () => {
   const [posts, setPosts] = React.useState([])
+
+  // Upvote / downvote
+  let [totalUpvotes, setTotalUpvotes] = React.useState(0)
+  let [totalDownvotes, setTotalDownvotes] = React.useState(0)
+
+  const increaseUpvotes = () => {
+    setTotalUpvotes(totalUpvotes += 1)
+  }
+
+  const decreaseUpvotes = () => {
+    setTotalUpvotes(totalUpvotes -= 1)
+  }
+
+  const increaseDownvotes = () => {
+    setTotalDownvotes(totalDownvotes += 1)
+  }
+
+  const decreaseDownvotes = () => {
+    setTotalDownvotes(totalDownvotes -= 1)
+  }
+
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
     fetch('/api/posts')
@@ -102,7 +123,11 @@ const App = () => {
 
   return (
     <>
-      <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section id="app-header">
+        <h1>r/BitsOfGood</h1>
+        <p>Subreddit Upvotes: {totalUpvotes}</p>
+        <p>Subreddit Downvotes: {totalDownvotes}</p>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +140,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          increaseUpvotes={increaseUpvotes}
+          decreaseUpvotes={decreaseUpvotes}
+          increaseDownvotes={increaseDownvotes}
+          decreaseDownvotes={decreaseDownvotes}
         />
       ))}
     </>
