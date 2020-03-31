@@ -16,11 +16,15 @@ const Comment = props => {
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button>
+            <div id="triangle-up-inactive"></div>
+          </button>
           <span className="center">
             {props.comment.upVotes - props.comment.downVotes}
           </span>
-          <button>↓</button>
+          <button>
+            <div id="triangle-down-inactive"></div>
+          </button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.comment.author}</div>

@@ -13,15 +13,65 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  let [isUpvoted, setUpvoted] = React.useState(false)
+  let [isDownvoted, setDownvoted] = React.useState(false)
+
+  const updateUpvotes = () => {
+    /*
+    CASES WHEN UPVOTE BUTTON IS PRESSED
+    Case 1: user did not upvote, did not downvote
+    Case 2: user did not upvote, did downvote
+    Case 3: user did upvote, did not downvote
+    */
+    if (!isUpvoted && !isDownvoted) {
+      props.post.upVotes += 1
+      setUpvoted(true)
+    } else if (!isUpvoted && isDownvoted) {
+      props.post.upVotes += 1
+      setUpvoted(true)
+      props.post.downVotes -= 1
+      setDownvoted(false)
+    } else {
+      props.post.upVotes -= 1
+      setUpvoted(false)
+    }
+  }
+
+  const updateDownvotes = () => {
+    /*
+    CASES WHEN DOWNVOTE BUTTON IS PRESSED
+    Case 1: user did not upvote, did not downvote
+    Case 2: user did not upvote, did downvote
+    Case 3: user did upvote, did not downvote
+    */
+    if (!isUpvoted && !isDownvoted) {
+      props.post.downVotes += 1
+      setDownvoted(true)
+    } else if (!isUpvoted && isDownvoted) {
+      props.post.downVotes -= 1
+      setDownvoted(false)
+    } else {
+      props.post.upVotes -= 1
+      setUpvoted(false)
+      props.post.downVotes += 1
+      setDownvoted(true)
+    }
+  }
+
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={updateUpvotes}>
+            <div id={isUpvoted ? "triangle-up-active" : "triangle-up-inactive"}></div>
+          </button>
           <span className="center">
             {props.post.upVotes - props.post.downVotes}
           </span>
-          <button>↓</button>
+          <button onClick={updateDownvotes}>
+            <div id={isDownvoted ? "triangle-down-active" : "triangle-down-inactive"}></div>
+          </button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
