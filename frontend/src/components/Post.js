@@ -86,7 +86,15 @@ const Post = props => {
           <div className="header">{props.post.title}</div>
           <div>{props.post.text}</div>
           <div className="button-row">
-            <button onClick={() => props.onDelete(props.post._id)}>
+            <button onClick={() => {
+              props.onDelete(props.post._id)
+              if (isUpvoted) {
+                props.decreaseUpvotes()
+              } else if (isDownvoted) {
+                props.decreaseDownvotes()
+              }
+            }
+            }>
               Delete
             </button>
             <button onClick={toggleReply}>Reply</button>​
