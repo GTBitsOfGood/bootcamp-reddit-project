@@ -25,14 +25,18 @@ const Post = props => {
     */
     if (!isUpvoted && !isDownvoted) {
       props.post.upVotes += 1
+      props.increaseUpvotes()
       setUpvoted(true)
     } else if (!isUpvoted && isDownvoted) {
       props.post.upVotes += 1
+      props.increaseUpvotes()
       setUpvoted(true)
       props.post.downVotes -= 1
+      props.decreaseDownvotes()
       setDownvoted(false)
     } else {
       props.post.upVotes -= 1
+      props.decreaseUpvotes()
       setUpvoted(false)
     }
   }
@@ -46,14 +50,18 @@ const Post = props => {
     */
     if (!isUpvoted && !isDownvoted) {
       props.post.downVotes += 1
+      props.increaseDownvotes()
       setDownvoted(true)
     } else if (!isUpvoted && isDownvoted) {
       props.post.downVotes -= 1
+      props.decreaseDownvotes()
       setDownvoted(false)
     } else {
       props.post.upVotes -= 1
+      props.decreaseUpvotes()
       setUpvoted(false)
       props.post.downVotes += 1
+      props.increaseDownvotes()
       setDownvoted(true)
     }
   }
