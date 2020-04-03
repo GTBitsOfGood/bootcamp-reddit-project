@@ -3,7 +3,6 @@ const { Post } = require('../models')
 module.exports.index = (req, res, next) => {
 
   const currDate = new Date(!req.query.currDate ? new Date().toISOString() : req.query.currDate);
-  console.log("Hellooooo");
 
   var range = {
     "createdAt" : {
