@@ -15,6 +15,18 @@ router.get("/", (req, res) => res.redirect("/api-docs"));
 router.get("/posts", controllers.posts.index);
 
 /**
+ * Test endpoint for filtering posts by date.
+ * @route POST /posts/test
+ * @param {ApiRequestPost.model} post.body.required - The date posted
+ * @group Posts - Operations about posts
+ * @operationId testDate
+ * @returns {ApiResponseSinglePost.model} 201 - The new post's date stored in the database
+ * @returns {ApiResponseError.model}  400 - Schema validation error
+ * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
+ */
+router.post("/posts/test", controllers.posts.test);
+
+/**
  * Create a new post.
  * @route POST /posts
  * @param {ApiRequestPost.model} post.body.required - The new post
