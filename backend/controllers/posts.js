@@ -1,10 +1,11 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
-  let dateRange = req.body.dateRange;
+  let dateRange = req.query.dateRange;
+
   if (dateRange != undefined) {
-    let currDate = new Date(req.body.currDate);
-    let date = new Date(req.body.currDate);
+    let currDate = new Date(req.query.currDate);
+    let date = new Date(req.query.date);
 
     if (dateRange === "Past week") {
       date.setDate(currDate.getDate() - 7);
