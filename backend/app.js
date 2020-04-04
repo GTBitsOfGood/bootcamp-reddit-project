@@ -48,5 +48,4 @@ let options = {
 }
 expressSwagger(options)
 app.use('/*', (req, res) => res.redirect('/api-docs'))
-
 module.exports = app

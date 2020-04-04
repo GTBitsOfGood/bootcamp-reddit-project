@@ -23,6 +23,10 @@ const postSchema = mongoose.Schema(
       type: Number,
       default: 0
     },
+    createdAt: {
+      type: Date,
+      default: new Date("March 31, 2020")
+    },
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
