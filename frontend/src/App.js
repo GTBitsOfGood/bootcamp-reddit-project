@@ -12,7 +12,20 @@ const App = () => {
       .then(res => res.json())
       .then(data => setPosts(data.posts))
   }
-
+  const [upvotes, upUpdate] = React.useState(0);
+  const [downvotes, downUpdate] = React.useState(0);
+  const increaseUpVote = () => {
+    upUpdate(upvotes + 1);
+  }
+  const decreaseUpVote = () => {
+    upUpdate(upvotes - 1);
+  }
+  const increaseDownVote = () => {
+    downUpdate(downvotes + 1);
+  }
+  const decreaseDownVote = () => {
+    downUpdate(downvotes - 1);
+  }
   React.useEffect(() => {
     // get posts on startup
     getPosts()
@@ -103,10 +116,18 @@ const App = () => {
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <div>
+        <p>Up Votes = {upvotes}</p>
+        <p> Down Votes = {downvotes} </p>
+      </div>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
         <Post
+          increaseDown = {increaseDownVote}
+          decreaseDown = {decreaseDownVote}
+          increaseUp = {increaseUpVote}
+          decreaseUp = {decreaseUpVote}
           key={curr._id}
           post={curr}
           onDelete={deletePost}
