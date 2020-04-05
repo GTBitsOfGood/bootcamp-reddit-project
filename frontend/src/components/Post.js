@@ -13,16 +13,66 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const [upvotes, setUpvotes] = React.useState(props.post.upVotes)
+  const [downvotes, setDownvotes] = React.useState(props.post.downVotes)
+
+  const [upvote, wasUpvoted] = React.useState(false)
+  const [downvote, wasDownvoted] = React.useState(false)
+  
+  const Upvoted = () => {
+    wasUpvoted(!upvote); 
+    
+    if (upvote) {
+      setUpvotes(upvotes - 1);
+      props.decrementUpvotes();
+      
+    }
+    else if (downvote && !upvote)  {
+      setUpvotes(upvotes + 1);
+      setDownvotes(downvotes - 1);
+      wasDownvoted(false);  
+      props.incrementUpvotes();
+      props.decrementDownvotes();
+      
+    }
+    else {
+      setUpvotes(upvotes + 1);
+      props.incrementUpvotes();
+    } 
+  }
+
+  
+  const downvoted = () => {
+    wasDownvoted(!downvote);
+    if (downvote) {
+      setDownvotes(downvotes - 1);
+      props.decrementDownvotes();
+    }
+    else if (!downvote && upvote) {
+      setUpvotes(upvotes - 1);
+      setDownvotes(downvotes + 1);
+      wasUpvoted(false)
+      props.decrementUpvotes();
+      props.incrementDownvotes();
+    }
+    else {
+      setDownvotes(downvotes + 1);
+      props.incrementDownvotes();
+    } 
+    
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button class = {upvote ? "upvote" : "arrows"} onClick = { () => {Upvoted();}}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {upvotes - downvotes}
           </span>
-          <button>↓</button>
+          <button class = {downvote ? "downvote" : "arrows"} onClick = { () => {downvoted();}}>↓</button>
         </div>
+
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
           <div className="header">{props.post.title}</div>
