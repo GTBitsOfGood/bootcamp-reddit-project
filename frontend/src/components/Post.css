@@ -48,3 +48,9 @@
   margin: 2px;
 }
 
+.upvote {
+  background-color: blue;
+}
+.downvote {
+  background-color: red;
+}
