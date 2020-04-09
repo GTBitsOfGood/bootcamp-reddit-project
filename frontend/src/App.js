@@ -100,13 +100,41 @@ const App = () => {
     })
   }
 
+  const [upVoteCount, setUpVoteCount] = React.useState(false)
+  const [downVoteCount, setDownVoteCount] = React.useState(false)
+
+  const incrementUpVoteCount = () => {
+    setUpVoteCount(upVoteCount + 1)
+  }
+  const decrementUpVoteCount = () => {
+    setUpVoteCount(upVoteCount - 1)
+  }
+  const incrementDownVoteCount = () => {
+      setDownVoteCount(downVoteCount + 1)
+  } 
+  const decrementDownVoteCount = () => {
+    setDownVoteCount(downVoteCount - 1)
+  }
+
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section>
+        <p>
+        Up Votes on this page: {upVoteCount}
+        </p>
+        <p>
+        Down Votes on this page: {downVoteCount}
+        </p>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
         <Post
+          incrementDownVoteCount={incrementDownVoteCount} 
+          decrementDownVoteCount={decrementDownVoteCount}
+          incrementUpVoteCount={incrementUpVoteCount} 
+          decrementUpVoteCount={decrementUpVoteCount}
           key={curr._id}
           post={curr}
           onDelete={deletePost}

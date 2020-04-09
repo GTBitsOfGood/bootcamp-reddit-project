@@ -7,22 +7,83 @@ const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
 
   const toggleReply = () => setReplyOpen(!replyOpen)
+  //console.log(toggleReply)
 
   const saveComment = commentData => {
     setReplyOpen(false)
     props.onComment(props.post._id, commentData)
   }
+  
+  
+  const [voteCount, setVoteCount] = React.useState(props.post.upVotes - props.post.downVotes)
+  
 
+  const [upVoteSelected, toggleUpVote] = React.useState(false)
+
+  const upVote = () => {
+    if (downVoteSelected === true) {
+      toggleDownVote(!downVoteSelected)
+      toggleUpVote(!upVoteSelected)
+      setVoteCount(voteCount + 2)
+      props.decrementDownVoteCount()
+      props.incrementUpVoteCount()
+      //downvotes-1
+      //upvotes+1
+      
+    } else if (upVoteSelected === true) {
+      toggleUpVote(!upVoteSelected)
+      setVoteCount(voteCount - 1)
+      props.decrementUpVoteCount()
+      //upvote-1
+      
+    } else {
+      toggleUpVote(!upVoteSelected)
+      setVoteCount(voteCount + 1)
+      props.incrementUpVoteCount()
+      //upvotes+1
+      
+    }
+  } 
+
+  
+
+  const [downVoteSelected, toggleDownVote] = React.useState(false)
+
+  const downVote = () => {
+    if (upVoteSelected === true) {
+      toggleUpVote(!upVoteSelected)
+      toggleDownVote(!downVoteSelected)
+      setVoteCount(voteCount - 2)
+      props.decrementUpVoteCount()
+      props.incrementDownVoteCount()
+      //upvotes-1
+      //downvotes+
+    } else if (downVoteSelected === true) {
+      toggleDownVote(!downVoteSelected)
+      setVoteCount(voteCount + 1)
+      props.decrementDownVoteCount()
+      //downvote-1
+    } else {
+      toggleDownVote(!downVoteSelected)
+      setVoteCount(voteCount - 1)
+      props.incrementDownVoteCount()
+      //downvotes+1
+    }
+    
+    
+  }
+  
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button class={upVoteSelected ? "selected" : ""} onClick={upVote}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+          {voteCount}
           </span>
-          <button>↓</button>
+          <button  class={downVoteSelected ? "selected" : ""} onClick={downVote}>↓</button>
         </div>
+
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
           <div className="header">{props.post.title}</div>
