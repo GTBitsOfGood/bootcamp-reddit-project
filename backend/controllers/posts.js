@@ -1,6 +1,62 @@
 const { Post } = require('../models')
 
+module.exports.test = (req, res, next) => {
+    const date = new Date(req.query.currDate)
+    const newPost = new Post({    
+        author: "Smeggy", 
+        title: "I’m tweaking", 
+        text: "Seattle is lit except for the Corona", 
+        createdAt: date.toISOString()
+      })
+      newPost
+        .save()
+        .then(posts => {
+          res.locals.data = { posts }
+          res.locals.status = 200
+          return next()
+        })
+        .catch(err => {
+          console.error(err)
+          res.locals.error = { error: err.message }
+          return next()
+        })      
+  }
+
 module.exports.index = (req, res, next) => {
+  const current = new Date(!req.query.current ? new Date().toISOString() : req.query.current);
+
+  var range = {
+    "createdAt" : {
+      "$lt" : current
+    }
+  }
+
+  const gteDate = new Date();
+  switch(req.query.dateRange) {
+    case "Past week":
+      gteDate.setDate(current.getDate() - 7);
+      range.createdAt.$gte = gteDate;
+      break;
+    case "Past month":
+      gteDate.setDate(current.getDate() - 31);
+      range.createdAt.$gte = gteDate;
+      break;
+    case "Past year":
+      gteDate.setDate(current.getDate() - 365);
+      range.createdAt.$gte = gteDate;
+      break;
+    case "A year ago":
+      gteDate.setDate(current.getDate() - 365);
+      range.createdAt.$lt = gteDate;
+      break;
+    case "Ancient times":
+      gteDate.setDate(current.getDate() - (365 * 10));
+      range.createdAt.$lt = gteDate;
+      break;
+    default:
+      break;
+  }
+  
   Post.find()
     .populate('comments')
     .sort('-createdAt')
@@ -94,4 +150,4 @@ module.exports.comment = (req, res, next) => {
       res.locals.status = 400
       return next()
     })
-}
+  }

@@ -71,3 +71,4 @@ postSchema.static("findByIdAndAddComment", function(id, commentData) {
 });
 
 module.exports = mongoose.model("Post", postSchema);
+
