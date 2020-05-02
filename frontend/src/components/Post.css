@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+.upVoteSelected {
+  text-align: center;
+  color: rgb(255,68,0);
+}
+
+.downVoteSelected {
+  text-align: center;
+  color: rgb(113,147,255);
+}
+
 .post {
   border: 1px solid black;
   /* margin: 5px 0px 5px 5px; */
@@ -36,6 +46,14 @@
 
 .arrows button {
   flex-grow: 1;
+}
+
+.upButton {
+  background-color: rgb(177,190,196);
+}
+
+.downButton {
+  background-color: rgb(177,190,196);
 }
 
 .post-body {
