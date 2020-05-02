@@ -13,6 +13,25 @@ const App = () => {
       .then(data => setPosts(data.posts))
   }
 
+  const [upVoteCounter, setUpVoteCounter] = React.useState(false)
+  const [downVoteCounter, setDownVoteCounter] = React.useState(false)
+
+  const increaseUpVotes = () => {
+    setUpVoteCounter(upVoteCounter + 1)
+  }
+
+  const decreaseUpVotes = () => {
+    setUpVoteCounter(upVoteCounter - 1)
+  }
+
+  const increaseDownVotes = () => {
+    setDownVoteCounter(downVoteCounter + 1)
+  }
+
+  const decreaseDownVotes = () => {
+    setDownVoteCounter(downVoteCounter - 1)
+  }
+
   React.useEffect(() => {
     // get posts on startup
     getPosts()
@@ -103,6 +122,12 @@ const App = () => {
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <p className="upVotes"> 
+        Current Total Upvotes are... {upVoteCounter}
+      </p>
+      <p className="downVotes">
+        Current Total Downvotes are... {downVoteCounter}
+      </p>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +140,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          increaseUpVotes={increaseUpVotes}
+          decreaseUpVotes={decreaseUpVotes}
+          increaseDownVotes={increaseDownVotes}
+          decreaseDownVotes={decreaseDownVotes}
         />
       ))}
     </>

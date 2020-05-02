@@ -13,15 +13,62 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const [upVoteSelected, setUpVoteSelectedFunction] = React.useState(false)
+
+  const [downVoteSelected, setDownVoteSelectedFunction] = React.useState(false)
+
+  const [postVotes, setPostVotes] = React.useState(props.post.upVotes-props.post.downVotes)
+
+
+  const setUpVoteSelected = () => {
+    if (upVoteSelected) { // case where it is initally selected
+      // unselect and decrement upVotes
+      setUpVoteSelectedFunction(!upVoteSelected)
+      props.decreaseUpVotes()
+      props.post.upVotes--
+    } else { // case where it is not initially selected
+      if (downVoteSelected) {
+        // fix the downvote to unselected
+        setDownVoteSelectedFunction(false)
+        props.decreaseDownVotes()
+        props.post.downVotes--
+      }
+      // select and increment upVotes
+      setUpVoteSelectedFunction(!upVoteSelected)
+      props.increaseUpVotes()
+      props.post.upVotes++
+    }
+  }
+
+  const setDownVoteSelected = () => {
+    if (downVoteSelected) { // case where downVote is already selected
+      // unselect and decrement downVotes
+      setDownVoteSelectedFunction(!downVoteSelected)
+      props.decreaseDownVotes()
+      props.post.downVotes--
+    } else { // case where it is not already selected
+      if (upVoteSelected) {
+        // fix the upVote button to unselected
+        setUpVoteSelectedFunction(false)
+        props.decreaseUpVotes()
+        props.post.upVotes--
+      }
+      // select and increment downVotes
+      setDownVoteSelectedFunction(!downVoteSelected)
+      props.increaseDownVotes()
+      props.post.downVotes++
+    }
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
-          <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+          <button onClick={setUpVoteSelected} className={upVoteSelected ? "upButton" : ""}>↑</button>
+          <span className={upVoteSelected ? "upVoteSelected" : downVoteSelected ? "downVoteSelected" : "center"}>
+            {props.post.upVotes-props.post.downVotes}
           </span>
-          <button>↓</button>
+          <button onClick={setDownVoteSelected} className={downVoteSelected ? "downButton" : ""}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
