@@ -1,6 +1,39 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
+  const CurrDate = new Date(!req.query.currDate ? new Date().toISOString() : req.query.currDate);
+
+  var range = {
+    "createdAt" : {
+      "$lt" : currDate
+    }
+  }
+  const gteDate = new Date();
+  switch (req.query.dateRange) {
+    case "Past Week":
+      gteDate.setDate(currDate.gteDate() - 7);
+      range.createdAt.$gte = gteDate;
+      break;
+    case "Past Month":
+      gteDate.setDate(currDate.gteDate() - 31);
+      range.createdAt.$gte = gteDate;
+      break;
+    case "Past Year":
+      gteDate.setDate(currDate.gteDate() - 365);
+      range.createdAt.$gte = gteDate;
+      break;
+    case "A Year Ago":
+      gteDate.setDate(currDate.gteDate() - 365);
+      range.createdAt.$lt = gteDate;
+      break;
+    case "Ancient Times":
+      gteDate.setDate(currDate.gteDate() - (365 * 10));
+      range.createdAt.$lt = gteDate;
+      break;
+    default:
+      break;
+  }
+  
   Post.find()
     .populate('comments')
     .sort('-createdAt')
@@ -94,4 +127,44 @@ module.exports.comment = (req, res, next) => {
       res.locals.status = 400
       return next()
     })
+}
+
+module.exports.index = (req, res, next) => {
+    const date = new Date(req.query.currDate)
+    if (req.query.dateRange == 'Past week') {
+      Post.find({createdAt: { '$lte': date, '$gte': new Date(date - 7 * 60 * 60 * 24 * 1000) }})
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      }) 
+  }
+
+module.exports.test = (req, res, next) => {
+  const date = new Date(req.params.date);
+  const newPost = new Post({    
+    author: "Neha", 
+    title: "COVID-19", 
+    text: "I hate quarantine", 
+    createdAt: date.toISOString()
+  })
+  newPost
+    .save()
+    .then(post => {
+      res.locals.data = { post }
+      res.locals.status = 201
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error : err.message }
+      res.locals.status  = 400
+      return next()
+    })
+}
 }
