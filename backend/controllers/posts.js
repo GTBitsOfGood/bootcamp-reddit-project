@@ -1,12 +1,18 @@
 const { Post } = require('../models')
 
-module.exports.index = (req, res, next) => {
-  Post.find()
-    .populate('comments')
-    .sort('-createdAt')
-    .then(posts => {
-      res.locals.data = { posts }
-      res.locals.status = 200
+module.exports.date = (req, res, next) => {
+  const date = new Date(req.query.createdAt)
+  const post = new Post({
+    author: "zxczx",
+    title: "zxczxc",
+    text: "zxx",
+    createdAt: date.toISOString()
+  })
+  post
+    .save()
+    .then(post => {
+      res.locals.data = { post }
+      res.locals.status = 201
       return next()
     })
     .catch(err => {
@@ -14,6 +20,128 @@ module.exports.index = (req, res, next) => {
       res.locals.error = { error: err.message }
       return next()
     })
+}
+
+module.exports.index = (req, res, next) => {
+  // 1. Get date from client
+  // 2. Find the target date by subtracting from current date
+  // 3. Convert that date to ISO String
+  // 4. Query it for all docs with strings >= target date
+  // 5. Return it to the user 
+  var dateFromClient = new Date(req.query.currDate)
+  var dateRange = req.query.dateRange
+  var targetDate = null
+  if (dateRange == 'Past Week') {
+    targetDate = (dateFromClient.setDate(dateFromClient.getDate() - 7))//.toISOString()
+    Post
+      .find({createdAt: {$gte: targetDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  } else if (dateRange == 'Past Month') {
+    targetDate = (dateFromClient.setMonth(dateFromClient.getMonth() - 1))//.toISOString()
+    Post
+      .find({createdAt: {$gte: targetDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  } else if (dateRange == 'Past Year') {
+    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 1))//.toISOString()
+    Post
+      .find({createdAt: {$gte: targetDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  } else if (dateRange == 'A year ago') {
+    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 1))//.toISOString()
+    const minDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 2))//.toISOString()
+    Post
+      .find({$and: [{createdAt: {$gte: minDate}}, {createdAt: {$lte: targetDate}}]})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  } else if (dateRange == 'Ancient times') {
+    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 10))//.toISOString()
+    Post
+      .find({createdAt: {$lte: targetDate}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  } else {
+    Post
+      .find()
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+  }
+  // Post
+  //   .find()
+  //   .populate('comments')
+  //   .sort('-createdAt')
+  //   .then(posts => {
+  //     res.locals.data = { posts }
+  //     res.locals.status = 200
+  //     return next()
+  //   })
+  //   .catch(err => {
+  //     console.error(err)
+  //     res.locals.error = { error: err.message }
+  //     return next()
+  //   })
 }
 
 module.exports.get = (req, res, next) => {
@@ -95,3 +223,4 @@ module.exports.comment = (req, res, next) => {
       return next()
     })
 }
+
