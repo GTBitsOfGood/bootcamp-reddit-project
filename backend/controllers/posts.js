@@ -32,7 +32,7 @@ module.exports.index = (req, res, next) => {
   var dateRange = req.query.dateRange
   var targetDate = null
   if (dateRange == 'Past Week') {
-    targetDate = (dateFromClient.setDate(dateFromClient.getDate() - 7))//.toISOString()
+    targetDate = (dateFromClient.setDate(dateFromClient.getDate() - 7))
     Post
       .find({createdAt: {$gte: targetDate}})
       .populate('comments')
@@ -48,7 +48,7 @@ module.exports.index = (req, res, next) => {
         return next()
       })
   } else if (dateRange == 'Past Month') {
-    targetDate = (dateFromClient.setMonth(dateFromClient.getMonth() - 1))//.toISOString()
+    targetDate = (dateFromClient.setMonth(dateFromClient.getMonth() - 1))
     Post
       .find({createdAt: {$gte: targetDate}})
       .populate('comments')
@@ -64,7 +64,7 @@ module.exports.index = (req, res, next) => {
         return next()
       })
   } else if (dateRange == 'Past Year') {
-    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 1))//.toISOString()
+    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 1))
     Post
       .find({createdAt: {$gte: targetDate}})
       .populate('comments')
@@ -80,8 +80,8 @@ module.exports.index = (req, res, next) => {
         return next()
       })
   } else if (dateRange == 'A year ago') {
-    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 1))//.toISOString()
-    const minDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 2))//.toISOString()
+    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 1))
+    const minDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 2))
     Post
       .find({$and: [{createdAt: {$gte: minDate}}, {createdAt: {$lte: targetDate}}]})
       .populate('comments')
@@ -97,7 +97,7 @@ module.exports.index = (req, res, next) => {
         return next()
       })
   } else if (dateRange == 'Ancient times') {
-    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 10))//.toISOString()
+    targetDate = (dateFromClient.setFullYear(dateFromClient.getFullYear() - 10))
     Post
       .find({createdAt: {$lte: targetDate}})
       .populate('comments')
@@ -128,20 +128,6 @@ module.exports.index = (req, res, next) => {
         return next()
       })
   }
-  // Post
-  //   .find()
-  //   .populate('comments')
-  //   .sort('-createdAt')
-  //   .then(posts => {
-  //     res.locals.data = { posts }
-  //     res.locals.status = 200
-  //     return next()
-  //   })
-  //   .catch(err => {
-  //     console.error(err)
-  //     res.locals.error = { error: err.message }
-  //     return next()
-  //   })
 }
 
 module.exports.get = (req, res, next) => {
