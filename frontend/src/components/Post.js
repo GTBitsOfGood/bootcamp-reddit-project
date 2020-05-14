@@ -5,6 +5,7 @@ import './Post.css'
 
 const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
+  const [vote, setVote] = React.useState(0)
 
   const toggleReply = () => setReplyOpen(!replyOpen)
 
@@ -13,15 +14,50 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  function toggleUpvote() {
+    if (vote === 1) {
+      setVote(0)
+      props.onUnUpvote()
+    } else {
+      setVote(1)
+      props.onUpvote()
+      if (vote === -1) {
+        props.onUnDownvote()
+      }
+    }
+  }
+
+  function toggleDownvote() {
+    if (vote === -1) {
+      setVote(0)
+      props.onUnDownvote()
+    } else {
+      setVote(-1)
+      props.onDownvote()
+      if (vote === 1) {
+        props.onUnUpvote()
+      }
+    }
+  }
+
+  function voteCountColor() {
+    if (vote === 1) {
+      return " up";
+    } else if (vote === -1) {
+      return " down";
+    }
+    return ""
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
-          <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+          <button onClick={toggleUpvote}>↑</button>
+          <span className={`center${voteCountColor()}`}>
+            {props.post.upVotes - props.post.downVotes + vote}
           </span>
-          <button>↓</button>
+          <button onClick={toggleDownvote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>

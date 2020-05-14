@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.center.up {
+  color: orange;
+}
+
+.center.down {
+  color:  blue;
+}
+
 .post {
   border: 1px solid black;
   /* margin: 5px 0px 5px 5px; */

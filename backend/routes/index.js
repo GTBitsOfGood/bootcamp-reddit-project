@@ -75,6 +75,12 @@ router.delete("/posts/:id", controllers.posts.delete);
 router.post("/posts/:id/comment", controllers.posts.comment);
 
 /**
+ * Creates a new test post.
+ * @route POST /posts/test
+ */
+router.post('/test', controllers.posts.test)
+
+/**
  * Get all comments on the server.
  * @route GET /comments
  * @group Comments - Operations about comments

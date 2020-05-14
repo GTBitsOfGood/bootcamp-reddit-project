@@ -5,6 +5,10 @@ import AddPost from './components/AddPost'
 import SortBy from './components/SelectDateRange'
 
 const App = () => {
+
+  const [upvoteCount, setUpvoteCount] = React.useState(0)
+  const [downvoteCount, setDownvoteCount] = React.useState(0)
+
   const [posts, setPosts] = React.useState([])
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
@@ -100,8 +104,28 @@ const App = () => {
     })
   }
 
+  const onUpvote = () => {
+    setUpvoteCount(upvoteCount + 1)
+  }
+
+  const onUnUpvote = () => {
+    setUpvoteCount(upvoteCount - 1)
+  }
+
+  const onDownvote = () => {
+    setDownvoteCount(downvoteCount + 1)
+  }
+
+  const onUnDownvote = () => {
+    setDownvoteCount(downvoteCount - 1)
+  }
+
   return (
     <>
+      <section>
+        <p><b>Upvotes: </b>{upvoteCount}</p>
+        <p><b>Downvotes: </b>{downvoteCount}</p>
+      </section>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
@@ -115,6 +139,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          onUpvote={onUpvote}
+          onUnUpvote={onUnUpvote}
+          onDownvote={onDownvote}
+          onUnDownvote={onUnDownvote}
         />
       ))}
     </>

@@ -1,19 +1,48 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
-  Post.find()
+  const dateRange = req.query.dateRange
+  const currDate = new Date(req.query.currDate)
+
+  let query = Post.find()
     .populate('comments')
     .sort('-createdAt')
-    .then(posts => {
-      res.locals.data = { posts }
-      res.locals.status = 200
-      return next()
-    })
-    .catch(err => {
-      console.error(err)
-      res.locals.error = { error: err.message }
-      return next()
-    })
+
+  if (typeof dateRange !== 'undefined') {
+    switch(dateRange) {
+      case 'Past week':
+        currDate.setDate(currDate.getDate() - 7)
+        query = query.where('createdAt').gte(currDate)
+        break
+      case 'Past month':
+        currDate.setMonth(currDate.getMonth() - 1)
+        query = query.where('createdAt').gte(currDate)
+        break
+      case 'Past year':
+        currDate.setFullYear(currDate.getFullYear() - 1)
+        query = query.where('createdAt').gte(currDate)
+        break
+      case 'A year ago':
+        currDate.setFullYear(currDate.getFullYear() - 1)
+        query = query.where('createdAt').lte(currDate)
+        break
+      case 'Ancient times':
+        currDate.setFullYear(currDate.getFullYear() - 10)
+        query = query.where('createdAt').lte(currDate)
+        break
+    }
+  }
+
+  query.then(posts => {
+    res.locals.data = { posts }
+    res.locals.status = 200
+    return next()
+  })
+  .catch(err => {
+    console.error(err)
+    res.locals.error = { error: err.message }
+    return next()
+  })
 }
 
 module.exports.get = (req, res, next) => {
@@ -94,4 +123,28 @@ module.exports.comment = (req, res, next) => {
       res.locals.status = 400
       return next()
     })
+}
+
+module.exports.test = (req, res, next) => {
+  const date = req.body.date
+
+  const post = new Post({
+    title: "Sample reddit post",
+    text: "Here's a sample reddit post for the frontend-ers to use :)",
+    author: "Max",
+    createdAt: new Date(date.toString()).toISOString()
+  })
+  post
+  .save()
+  .then(post => {
+    res.locals.data = { post }
+    res.locals.status = 201
+    return next()
+  })
+  .catch(err => {
+    console.error(err)
+    res.locals.error = { error: err.message }
+    res.locals.status = 400
+    return next()
+  })
 }
