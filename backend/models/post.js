@@ -71,3 +71,12 @@ postSchema.static("findByIdAndAddComment", function(id, commentData) {
 });
 
 module.exports = mongoose.model("Post", postSchema);
+
+const newPostSchema = mongoose.Schema({
+  author: String, 
+  title: String, 
+  text: String, 
+  createdAt: Date
+})
+
+const newPostModel = mongoose.model("post", newPostSchema)

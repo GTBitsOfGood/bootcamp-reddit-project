@@ -1,6 +1,77 @@
 const { Post } = require('../models')
 
 module.exports.index = (req, res, next) => {
+  const date = new Date(req.query.currDate)
+  if (req.query.dateRange == 'Past week') {
+    Post.find({createdAt: { '$lte': date, '$gte': new Date(date - 7 * 60 * 60 * 24 * 1000) }})
+    .then(posts => {
+      res.locals.data = { posts }
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    }) 
+  }
+
+  if (req.query.dateRange == 'Past month') {
+    Post.find({createdAt: { '$lte': date, '$gte': new Date(date - 31 * 60 * 60 * 24 * 1000) }})
+    .then(posts => {
+      res.locals.data = { posts }
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    }) 
+  }
+
+  if (req.query.dateRange == 'Past year') {
+    Post.find({createdAt: { '$lte': date, '$gte': new Date(date - 365 * 60 * 60 * 24 * 1000) }})
+    .then(posts => {
+      res.locals.data = { posts }
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    }) 
+  }
+
+  if (req.query.dateRange == 'A year ago') {
+    Post.find({createdAt: {'$lte': new Date(date - 365 * 60 * 60 * 24 * 1000), '$gte': new Date(date - 365 * 9 * 60 * 60 * 24 * 1000) }})
+    .then(posts => {
+      res.locals.data = { posts }
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    })
+  }
+
+    if (req.query.dateRange == 'Ancient times') {
+      Post.find({createdAt: {'$lte': new Date(date - 365 * 9 * 60 * 60 * 24 * 1000)}})
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      }) 
+    }
+
   Post.find()
     .populate('comments')
     .sort('-createdAt')
@@ -47,6 +118,7 @@ module.exports.store = (req, res, next) => {
       return next()
     })
 }
+
 
 module.exports.update = (req, res, next) => {
   Post.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -95,3 +167,20 @@ module.exports.comment = (req, res, next) => {
       return next()
     })
 }
+
+function dummy(req, res, next) {
+
+  const date = new Date(req)
+  
+  const testPost = new Post({    
+    author: "Judah2", 
+    title: "I hope this works... Part 2!", 
+    text: "Got nothing more to say, again", 
+    createdAt: date.toISOString()
+  })
+
+  testPost.save();
+
+}
+
+const dummyPost = dummy("June 10, 2019");
