@@ -12,16 +12,55 @@ const Post = props => {
     setReplyOpen(false)
     props.onComment(props.post._id, commentData)
   }
+  const [upVoted, setUp] = React.useState(false)
+  const [downVoted, setDown] = React.useState(false)
 
+  const upVote = () => {
+    if (upVoted) {
+      props.post.upVotes -= 1
+      setUp(false);
+      props.decreaseUp()
+    } else if (downVoted) {
+      props.post.downVotes -= 1
+      setDown(false)
+      props.decreaseDown()
+      props.post.upVotes += 1
+      setUp(true)
+      props.increaseUp()
+    } else  {
+      setUp(true)
+      props.post.upVotes += 1
+      props.increaseUp()
+    }
+  }
+
+  const downVote = () => {
+    if (upVoted) {
+      props.post.upVotes -= 1
+      setUp(false);
+      props.decreaseUp()
+      props.post.downVotes += 1
+      setDown(true)
+      props.increaseDown()
+    } else if (downVoted) {
+      props.post.downVotes -= 1
+      setDown(false)
+      props.decreaseDown()
+    } else  {
+      props.post.downVotes += 1
+      setDown(true)
+      props.increaseDown()
+    }
+  }
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick ={upVote}>↑</button>
           <span className="center">
             {props.post.upVotes - props.post.downVotes}
           </span>
-          <button>↓</button>
+          <button onClick ={downVote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
