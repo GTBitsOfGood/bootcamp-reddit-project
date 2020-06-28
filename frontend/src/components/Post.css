@@ -48,3 +48,14 @@
   margin: 2px;
 }
 
+.upVoted {
+  background-color: orange;
+}
+
+.downVoted {
+  background-color: purple;
+}
+
+.default {
+  background-color: white;
+}
