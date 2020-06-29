@@ -13,15 +13,52 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const [voteNum, setVoteNum] = React.useState(0)
+  const [upvoted, setUpvoted] = React.useState(false)
+  const [downvoted, setDownvoted] = React.useState(false)
+
+  const toggleUpvote = () => {
+    if (upvoted) {
+      setVoteNum(voteNum - 1)
+      props.decreaseUpvotes()
+    } else if (!upvoted) {
+      setVoteNum(voteNum + 1)
+      props.increaseUpvotes()
+    }
+    if (downvoted) {
+      setDownvoted(false)
+      setVoteNum(voteNum + 2)
+      props.decreaseDownvotes()
+    }
+    setUpvoted(!upvoted)
+  }
+
+  const toggleDownvote = () => {
+    if (downvoted) {
+      setVoteNum(voteNum + 1)
+      props.decreaseDownvotes()
+    } else if (!downvoted) {
+      setVoteNum(voteNum - 1)
+      props.increaseDownvotes()
+    }
+    if (upvoted) {
+      setUpvoted(false)
+      setVoteNum(voteNum - 2)
+      props.decreaseUpvotes()
+    }
+    setDownvoted(!downvoted)
+  }
+
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button class={upvoted ? "upvote selected" : "upvote"} onClick={toggleUpvote}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {voteNum}
           </span>
-          <button>↓</button>
+          <button class={downvoted ? "downvote selected" : "downvote"} onClick={toggleDownvote}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>

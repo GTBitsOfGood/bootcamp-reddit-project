@@ -48,3 +48,10 @@
   margin: 2px;
 }
 
+.upvote.selected {
+  background-color: #2693de;
+}
+
+.downvote.selected {
+  background-color: orange;
+}

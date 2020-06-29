@@ -100,9 +100,32 @@ const App = () => {
     })
   }
 
+  const [numUpvotes, setNumUpvotes] = React.useState(0)
+  const [numDownvotes, setNumDownvotes] = React.useState(0)
+
+  const increaseUpvotes = () => {
+    setNumUpvotes(numUpvotes + 1)
+  }
+
+  const decreaseUpvotes = () => {
+    setNumUpvotes(numUpvotes - 1)
+  }
+
+  const increaseDownvotes = () => {
+    setNumDownvotes(numDownvotes + 1)
+  }
+
+  const decreaseDownvotes = () => {
+    setNumDownvotes(numDownvotes - 1)
+  }
+
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section>
+        <p>Upvotes: {numUpvotes}</p>
+        <p>Downvotes: {numDownvotes}</p>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +138,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          increaseDownvotes={increaseDownvotes}
+          decreaseDownvotes={decreaseDownvotes}
+          increaseUpvotes={increaseUpvotes}
+          decreaseUpvotes={decreaseUpvotes}
         />
       ))}
     </>
