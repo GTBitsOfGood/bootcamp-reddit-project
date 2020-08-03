@@ -27,6 +27,18 @@ router.get("/posts", controllers.posts.index);
 router.post("/posts", controllers.posts.store);
 
 /**
+ * Create a new test post to test filtering with date ranges
+ * @route POST /test
+ * @param {ApiRequestPost.model} post.body.required - The new post
+ * @group Posts - Operations about posts
+ * @operationId createPost
+ * @returns {ApiResponseSinglePost.model} 201 - The new post stored in the database
+ * @returns {ApiResponseError.model}  400 - Schema validation error
+ * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
+ */
+router.post("/test", controllers.posts.test);
+
+/**
  * Get a specific post.
  * @route GET /posts/:id
  * @param {number} id.path.required - The post id

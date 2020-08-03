@@ -95,3 +95,32 @@ module.exports.comment = (req, res, next) => {
       return next()
     })
 }
+
+module.exports.test = (req, res, next) => {
+  console.log("hello");
+
+  const dateObject = new Date(req.query.date);
+  console.log(req.query.date);
+  
+  const newPost = new Post({
+    author: "Anand",
+    title: "test post", 
+    text: "test",
+    createdAt: dateObject.toISOString()
+  });
+
+  newPost
+    .save()
+    .then(post => {
+      res.locals.data = { post };
+      res.locals.status = 201;
+      return next()
+    })
+    .catch(err => {
+      console.error(err);
+      res.locals.error = { error: err.message };
+      res.locals.status = 400;
+      return next();
+    })
+    
+}
