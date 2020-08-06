@@ -1,5 +1,32 @@
 const { Post } = require('../models')
 
+
+module.exports.post = (req, res, next) => {
+  const date = new Date(req.body.createdAt)
+  const newPost = new Post ( 
+    {
+      "author": 'Sebastian', 
+      "title": 'Test Post', 
+      "text": 'Sample Body', 
+      "createdAt": date
+    }
+  )
+
+  newPost
+    .save()
+    .then(post => {
+      res.locals.data = { post }
+      res.locals.status = 201
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      res.locals.status = 400
+      return next()
+    })
+}
+
 module.exports.index = (req, res, next) => {
   Post.find()
     .populate('comments')

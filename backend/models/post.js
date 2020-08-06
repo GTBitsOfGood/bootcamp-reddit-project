@@ -15,6 +15,10 @@ const postSchema = mongoose.Schema(
       type: String,
       required: true
     },
+    createdAt: {
+      type: Date,
+      required: true
+    },
     upVotes: {
       type: Number,
       default: 0
