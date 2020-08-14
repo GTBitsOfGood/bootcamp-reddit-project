@@ -1,5 +1,42 @@
 const { Post } = require('../models')
 
+module.exports.add = (req, res, next) => {
+  let date = new Date(req.body.date)
+
+  if (typeof(req.body) !== "object") {
+    res.locals.error = { error: "Must include a date" }
+    res.locals.status = 400
+    return next()
+  }
+
+  if (date == "Invalid Date") {
+    res.locals.error = { error: "Invalid date"}
+    res.locals.status = 400
+    return next()
+  } else {
+    date = new Date(req.body.date)
+  }
+
+  const myPost = new Post({
+    author: "Jack DiMarco",
+    title: "Test title",
+    text: "Test text",
+    createdAt: date.toISOString()
+  })
+  myPost
+    .save()
+    .then(myPost => {
+      res.locals.data = {myPost}
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    })
+}
+
 module.exports.index = (req, res, next) => {
   Post.find()
     .populate('comments')
