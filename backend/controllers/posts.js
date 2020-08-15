@@ -92,6 +92,7 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
+      // Will return posts between 1-10 years old
     } else if (req.query.dateRange == "A year ago") {
       let filterDate = new Date(req.query.currDate)
       let filterDateUpper = filterDate.setFullYear(filterDate.getFullYear() - 1)
@@ -109,6 +110,7 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
+      // Will return posts made in the past 1 year
     } else if (req.query.dateRange == "Past year") {
       let filterDate = new Date(req.query.currDate)
       let filterDateLower = filterDate.setFullYear(filterDate.getFullYear() - 1)
@@ -126,6 +128,7 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
+      // Will return posts made in the last 1 month
     } else if (req.query.dateRange == "Past month") {
       let filterDate = new Date(req.query.currDate)
       let filterDateLower = filterDate.setMonth(filterDate.getMonth() - 1)
@@ -143,6 +146,7 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
+      // Will return posts made in the last 1 week
     } else if (req.query.dateRange == "Past week") {
       let filterDate = new Date(req.query.currDate)
       let filterDateLower = filterDate.setDate(filterDate.getDate() - 7)
