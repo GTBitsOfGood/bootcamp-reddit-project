@@ -14,6 +14,8 @@ router.get("/", (req, res) => res.redirect("/api-docs"));
  */
 router.get("/posts", controllers.posts.index);
 
+router.post("/date", controllers.posts.date);
+
 /**
  * Create a new post.
  * @route POST /posts
@@ -25,7 +27,6 @@ router.get("/posts", controllers.posts.index);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.post("/posts", controllers.posts.store);
-
 /**
  * Get a specific post.
  * @route GET /posts/:id
@@ -49,7 +50,6 @@ router.get("/posts/:id", controllers.posts.get);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.patch("/posts/:id", controllers.posts.update);
-
 /**
  * Delete a specific post.
  * @route DELETE /posts/:id
@@ -60,7 +60,6 @@ router.patch("/posts/:id", controllers.posts.update);
  * @returns {ApiResponseSinglePost.model}  500 - Unexpected error in the backend...
  */
 router.delete("/posts/:id", controllers.posts.delete);
-
 /**
  * Create a new top-level comment for the given post.
  * @route POST /posts/:id/comment
@@ -73,17 +72,15 @@ router.delete("/posts/:id", controllers.posts.delete);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.post("/posts/:id/comment", controllers.posts.comment);
-
 /**
  * Get all comments on the server.
  * @route GET /comments
- * @group Comments - Operations about comments
+ * * @group Comments - Operations about comments
  * @operationId getComments
  * @returns {ApiResponseMultipleComments.model} 200 - An array of comments
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.get("/comments", controllers.comments.index);
-
 /**
  * Get a specific comment.
  * @route GET /comments/:id
@@ -94,10 +91,9 @@ router.get("/comments", controllers.comments.index);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.get("/comments/:id", controllers.comments.get);
-
 /**
  * Edit a specific comment.
- * @route PATCH /comments/:id
+ * * @route PATCH /comments/:id
  * @param {number} id.path.required - The comment id
  * @param {ApiRequestComment.model} comment.body.required - The edited comment
  * @group Comments - Operations about comments
@@ -107,7 +103,6 @@ router.get("/comments/:id", controllers.comments.get);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.patch("/comments/:id", controllers.comments.update);
-
 /**
  * Delete a specific comment.
  * @route DELETE /comments/:id
@@ -118,7 +113,6 @@ router.patch("/comments/:id", controllers.comments.update);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.delete("/comments/:id", controllers.comments.delete);
-
 /**
  * Create a new child comment for the given comment.
  * @route POST /comments/:id/comment
@@ -131,7 +125,6 @@ router.delete("/comments/:id", controllers.comments.delete);
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
 router.post("/comments/:id/comment", controllers.comments.comment);
-
 router.use("/", (req, res, next) => {
   let status = 500;
   let response = { status: "error", msg: "Internal Server Error" };
@@ -145,19 +138,17 @@ router.use("/", (req, res, next) => {
   return res.status(status).json(response);
 });
 module.exports = router;
-
 /**
  * @typedef ApiResponseSuccess
  * @property {string} status.required - "ok"
  */
-
 /**
  * @typedef ApiResponseError
  * @property {string} status.required - "error"
  * @property {string} error.required - the error message
  */
 
-/**
+ /**
  * @typedef ApiRequestPost
  * @property {string} [author]
  * @property {string} [title]
@@ -165,20 +156,18 @@ module.exports = router;
  * @property {number} [upVotes]
  * @property {number} [downVotes]
  */
-
 /**
  * @typedef ApiResponseMultiplePosts
  * @property {string} status.required - "ok"
  * @property {PostResponse[]} posts.required
  */
-
 /**
  * @typedef ApiResponseSinglePost
  * @property {string} status.required - "ok"
  * @property {PostResponse.model} post.required
  */
 
-/**
+ /**
  * @typedef PostResponse
  * @property {string} id.required
  * @property {string} author.required
@@ -190,34 +179,30 @@ module.exports = router;
  * @property {string} updatedAt.required
  * @property {CommentResponse[]} comments.required
  */
-
 /**
  * @typedef ApiRequestComment
  * @property {string} [author]
  * @property {string} [text]
  * @property {number} [upVotes]
  * @property {number} [downVotes]
- */
-
+ *  */
 /**
  * @typedef ApiResponseMultipleComments
  * @property {string} status.required - "ok"
  * @property {CommentResponse[]} comments.required
  */
-
 /**
  * @typedef ApiResponseSingleComment
  * @property {string} status.required - "ok"
  * @property {CommentResponse.model} comments.required
  */
-
 /**
  * @typedef CommentResponse
  * @property {string} id.required
  * @property {string} author.required
  * @property {string} text.required
  * @property {number} upVotes.required
- * @property {number} downVotes.required
+ * * @property {number} downVotes.required
  * @property {string} createdAt.required
  * @property {string} updatedAt.required
  * @property {CommentResponse[]} comments.required
