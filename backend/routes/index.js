@@ -5,6 +5,11 @@ const controllers = require("../controllers");
 router.get("/", (req, res) => res.redirect("/api-docs"));
 
 /**
+ * Endpoint to use for testing adding new posts
+ */
+router.post("/posts/test", controllers.posts.add)
+
+/**
  * Get all posts on the server.
  * @route GET /posts
  * @group Posts - Operations about posts
