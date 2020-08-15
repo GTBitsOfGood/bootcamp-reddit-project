@@ -18,7 +18,7 @@ module.exports.add = (req, res, next) => {
   }
   // Creates a post with this valid date object
   const myPost = new Post({
-    author: "Jack DiMarco",
+    author: "Test Author",
     title: "Test title",
     text: "Test text",
     createdAt: date.toISOString()
@@ -37,17 +37,49 @@ module.exports.add = (req, res, next) => {
     })
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports.index = (req, res, next) => {
   // Makes sure a data filter is passed in through a query
-  if (req.query.dateFilter == undefined) {
-    res.locals.error = { error: "Date range cannot be undefined" }
-    res.locals.status = 400
-    return next()
+  if (req.query.dateRange == undefined) {
+    Post
+      .find()
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
   } else {
     // Will return posts that are 10 years old or older
-    if (req.query.dateFilter == "Ancient times") {
+    if (req.query.dateRange == "Ancient times") {
+      let filterDate = new Date(req.query.currDate)
+      filterDate = filterDate.setFullYear(filterDate.getFullYear() - 10)
       Post
-      .find({createdAt: {$gte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 10)}})
+      .find({createdAt: {$lte: filterDate}})
       .populate('comments')
       .sort('-createdAt')
       .then(posts => {
@@ -60,11 +92,11 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
-      // Will return posts that are between 1 and 10 years old
     } else if (req.query.dateRange == "A year ago") {
-      Post
-      .find({createdAt: {$gte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 10),
-        $lte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 1)}})
+      let filterDate = new Date(req.query.currDate)
+      let filterDateUpper = filterDate.setFullYear(filterDate.getFullYear() - 1)
+      let filterDateLower = filterDate.setFullYear(filterDate.getFullYear() - 9)
+      Post.find({createdAt: {$gte: filterDateLower, $lte: filterDateUpper}})
       .populate('comments')
       .sort('-createdAt')
       .then(posts => {
@@ -77,10 +109,11 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
-      // Will return any posts in the last 1 year
     } else if (req.query.dateRange == "Past year") {
-      Post
-      .find({createdAt: {$gte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 1)}})
+      let filterDate = new Date(req.query.currDate)
+      let filterDateLower = filterDate.setFullYear(filterDate.getFullYear() - 1)
+      let filterDateUpper = new Date()
+      Post.find({createdAt: {$gte: filterDateLower, $lte: filterDateUpper}})
       .populate('comments')
       .sort('-createdAt')
       .then(posts => {
@@ -93,10 +126,11 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
-      // Will return any posts in the last one month
     } else if (req.query.dateRange == "Past month") {
-      Post
-      .find({createdAt: {$gte: req.query.currentDate.setMonth(req.query.currentDate.getMonth - 1)}})
+      let filterDate = new Date(req.query.currDate)
+      let filterDateLower = filterDate.setMonth(filterDate.getMonth() - 1)
+      let filterDateUpper = new Date()
+      Post.find({createdAt: {$gte: filterDateLower, $lte: filterDateUpper}})
       .populate('comments')
       .sort('-createdAt')
       .then(posts => {
@@ -109,10 +143,11 @@ module.exports.index = (req, res, next) => {
         res.locals.error = { error: err.message }
         return next()
       })
-      // Will return posts in the last one week
     } else if (req.query.dateRange == "Past week") {
-      Post
-      .find({createdAt: {$gte: req.query.currentDate.setDate(req.query.currentDate.getDate - 7)}})
+      let filterDate = new Date(req.query.currDate)
+      let filterDateLower = filterDate.setDate(filterDate.getDate() - 7)
+      let filterDateUpper = new Date()
+      Post.find({createdAt: {$gte: filterDateLower, $lte: filterDateUpper}})
       .populate('comments')
       .sort('-createdAt')
       .then(posts => {
