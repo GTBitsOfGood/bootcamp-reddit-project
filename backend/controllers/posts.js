@@ -2,13 +2,13 @@ const { Post } = require('../models')
 
 module.exports.add = (req, res, next) => {
   let date = new Date(req.body.date)
-
+  // Verifies an object was passed in with the request
   if (typeof(req.body) !== "object") {
     res.locals.error = { error: "Must include a date" }
     res.locals.status = 400
     return next()
   }
-
+  // Verifies the object is a valid date object
   if (date == "Invalid Date") {
     res.locals.error = { error: "Invalid date"}
     res.locals.status = 400
@@ -16,7 +16,7 @@ module.exports.add = (req, res, next) => {
   } else {
     date = new Date(req.body.date)
   }
-
+  // Creates a post with this valid date object
   const myPost = new Post({
     author: "Jack DiMarco",
     title: "Test title",
@@ -38,19 +38,95 @@ module.exports.add = (req, res, next) => {
 }
 
 module.exports.index = (req, res, next) => {
-  Post.find()
-    .populate('comments')
-    .sort('-createdAt')
-    .then(posts => {
-      res.locals.data = { posts }
-      res.locals.status = 200
-      return next()
-    })
-    .catch(err => {
-      console.error(err)
-      res.locals.error = { error: err.message }
-      return next()
-    })
+  // Makes sure a data filter is passed in through a query
+  if (req.query.dateFilter == undefined) {
+    res.locals.error = { error: "Date range cannot be undefined" }
+    res.locals.status = 400
+    return next()
+  } else {
+    // Will return posts that are 10 years old or older
+    if (req.query.dateFilter == "Ancient times") {
+      Post
+      .find({createdAt: {$gte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 10)}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+      // Will return posts that are between 1 and 10 years old
+    } else if (req.query.dateRange == "A year ago") {
+      Post
+      .find({createdAt: {$gte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 10),
+        $lte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 1)}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+      // Will return any posts in the last 1 year
+    } else if (req.query.dateRange == "Past year") {
+      Post
+      .find({createdAt: {$gte: req.query.currentDate.setFullYear(req.query.currentDate.getFullYear - 1)}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+      // Will return any posts in the last one month
+    } else if (req.query.dateRange == "Past month") {
+      Post
+      .find({createdAt: {$gte: req.query.currentDate.setMonth(req.query.currentDate.getMonth - 1)}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+      // Will return posts in the last one week
+    } else if (req.query.dateRange == "Past week") {
+      Post
+      .find({createdAt: {$gte: req.query.currentDate.setDate(req.query.currentDate.getDate - 7)}})
+      .populate('comments')
+      .sort('-createdAt')
+      .then(posts => {
+        res.locals.data = { posts }
+        res.locals.status = 200
+        return next()
+      })
+      .catch(err => {
+        console.error(err)
+        res.locals.error = { error: err.message }
+        return next()
+      })
+    }
+  }
 }
 
 module.exports.get = (req, res, next) => {
