@@ -37,25 +37,6 @@ module.exports.add = (req, res, next) => {
     })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports.index = (req, res, next) => {
   // Makes sure a data filter is passed in through a query
   if (req.query.dateRange == undefined) {
