@@ -132,6 +132,8 @@ router.delete("/comments/:id", controllers.comments.delete);
  */
 router.post("/comments/:id/comment", controllers.comments.comment);
 
+router.post("/posts/:newPostDate", controllers.posts.test);
+
 router.use("/", (req, res, next) => {
   let status = 500;
   let response = { status: "error", msg: "Internal Server Error" };
