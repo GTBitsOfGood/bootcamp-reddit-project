@@ -99,10 +99,34 @@ const App = () => {
       getPosts()
     })
   }
+  // Total Post Numbers
+  let [totalDown, setTotalDown] = React.useState(0)
+  let [totalUp, setTotalUp] = React.useState(0)
+  // Start at zero for when we boot page
+
+  // FUNCTIONS TO INCREASE TOTAL
+  const increaseUp = () => {
+    setTotalUp(totalUp += 1)
+  }
+  const increaseDown = () => {
+    setTotalDown(totalDown += 1)
+  }
+
+  // FUNCTIONS TO DECREASE TOTAL
+  const decreaseUp = () => {
+    setTotalUp(totalUp -= 1)
+  }
+  const decreaseDown = () => {
+    setTotalDown(totalDown -= 1)
+  }
 
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section> 
+        <p>Total Upvotes: {totalUp}</p>
+        <p>Total Downvotes: {totalDown}</p>
+       </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +139,10 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          increaseUp={increaseUp}
+          increaseDown={increaseDown}
+          decreaseUp={decreaseUp}
+          decreaseDown={decreaseDown}
         />
       ))}
     </>
