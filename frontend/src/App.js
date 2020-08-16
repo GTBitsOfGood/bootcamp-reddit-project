@@ -132,8 +132,8 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
-          updateNumUp={upVoteCounter}
-          updateNumDown={downVoteCounter}
+          upVoteCounter={upVoteCounter}
+          downVoteCounter={downVoteCounter}
         />
       ))}
     </>
