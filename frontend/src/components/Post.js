@@ -23,6 +23,7 @@ const Post = props => {
     } else if ((numUpVotes === 0) && (numDownVotes === 1)) {
       setNumDownVotes(0)
     }
+    props.upVoteCounter(numUpVotes, numDownVotes)
   }
 
   function clickDownVotes () {
@@ -33,6 +34,7 @@ const Post = props => {
     } else if ((numDownVotes === 0) && (numUpVotes === 1)) {
       setNumUpVotes(0)
     }
+    props.downVoteCounter(numDownVotes, numDownVotes)
   }
 
   return (

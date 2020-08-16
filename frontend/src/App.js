@@ -7,8 +7,8 @@ import SortBy from './components/SelectDateRange'
 const App = () => {
   const [posts, setPosts] = React.useState([])
   // new
-  const [numUpVotes, setNumUpVotes] = React.useState(0)
-  const [numDownVotes, setNumDownVotes] = React.useState(0)
+  const [totNumUpVotes, setTotNumUpVotes] = React.useState([])
+  const [totNumDownVotes, setTotNumDownVotes] = React.useState([])
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
     fetch('/api/posts')
@@ -103,22 +103,15 @@ const App = () => {
     })
   }
 
-  const upVoteCounter = () => {
-    fetch(`/api/posts/`)
+  const upVoteCounter = (numUpVotes, numDownVotes) => {
+    setTotNumUpVotes([...totNumUpVotes, numUpVotes])
+    setTotNumDownVotes([...totNumDownVotes, numDownVotes])
   }
 
-  const downVoteCounter = () => {
-    fetch(`/api/posts/`)
+  const downVoteCounter = (numUpVotes, numDownVotes) => {
+    setTotNumUpVotes([...totNumUpVotes, numUpVotes])
+    setTotNumDownVotes([...totNumDownVotes, numDownVotes])
   }
-  // new
-  // function upVoteCounter () {
-  //   setNumUpVotes(this.numUpVotes)
-  // }
-
-  // // new
-  // function downVoteCounter () {
-  //   setNumDownVotes(this.numDownVotes)
-  // }
 
   return (
     <>
@@ -139,8 +132,8 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
-          // upVoteCount ={upVoteCounter}
-          // downVoteCount ={downVoteCounter}
+          updateNumUp={upVoteCounter}
+          updateNumDown={downVoteCounter}
         />
       ))}
     </>
