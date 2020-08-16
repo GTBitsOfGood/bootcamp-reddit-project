@@ -5,6 +5,17 @@ import AddPost from './components/AddPost'
 import SortBy from './components/SelectDateRange'
 
 const App = () => {
+  const [downVote, setDownVote] = React.useState(0)
+  const [upVote, setUpVote] = React.useState(0)
+
+  const updateUpVote = vote => {
+    setUpVote(upVote + vote)
+  }
+
+  const updateDownVote = vote => {
+    setDownVote(downVote + vote)
+  }
+
   const [posts, setPosts] = React.useState([])
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
@@ -103,6 +114,8 @@ const App = () => {
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <p>Up votes: {upVote}</p>
+      <p>Down votes: {downVote}</p>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +128,8 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          updateUpVote={updateUpVote}
+          updateDownVote={updateDownVote}
         />
       ))}
     </>

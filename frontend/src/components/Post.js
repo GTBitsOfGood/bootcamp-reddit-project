@@ -5,6 +5,46 @@ import './Post.css'
 
 const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
+  const [voteCount, setVoteCount] = React.useState(0)
+  const [upSelected, setUpSelected] = React.useState(false)
+  const [downSelected, setDownSelected] = React.useState(false)
+
+
+  const toggleUpSelected = () => {
+    if (upSelected === false && downSelected === false) {
+      setUpSelected(!upSelected)
+      setVoteCount(voteCount + 1)
+      props.updateUpVote(1)
+    } else if (upSelected === false && downSelected === true){
+      setDownSelected(!downSelected)
+      setUpSelected(!upSelected)
+      setVoteCount(voteCount + 2)
+      props.updateUpVote(1)
+      props.updateDownVote(-1)
+    } else if (upSelected === true) {
+      setUpSelected(!upSelected)
+      setVoteCount(voteCount - 1)
+      props.updateUpVote(-1)
+    }
+  } 
+  
+  const toggleDownSelected = () => {
+    if (downSelected === false && upSelected === false) {
+      setDownSelected(!downSelected)
+      setVoteCount(voteCount - 1)
+      props.updateDownVote(1)
+    } else if (downSelected === false && upSelected === true){
+      setUpSelected(!upSelected)
+      setDownSelected(!downSelected)
+      setVoteCount(voteCount - 2)
+      props.updateDownVote(1)
+      props.updateUpVote(-1)
+    } else if (downSelected === true) {
+      setDownSelected(!downSelected)
+      setVoteCount(voteCount + 1)
+      props.updateDownVote(-1)
+    }
+  }
 
   const toggleReply = () => setReplyOpen(!replyOpen)
 
@@ -17,11 +57,11 @@ const Post = props => {
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button className={upSelected ? "post - selected" : "post"} onClick={toggleUpSelected} >↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {voteCount}
           </span>
-          <button>↓</button>
+          <button className={downSelected ? "post - selected" : "post"} onClick={toggleDownSelected} >↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
