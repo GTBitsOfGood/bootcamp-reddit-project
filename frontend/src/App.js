@@ -117,8 +117,8 @@ const App = () => {
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
       <section id="voting">
-        <p>Upvote Count:</p>
-        <p>Downvote Count:</p>
+        <p>Upvote Count: {totNumUpVotes}</p>
+        <p>Downvote Count: {totNumDownVotes}</p>
       </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
