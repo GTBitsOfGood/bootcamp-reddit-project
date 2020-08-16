@@ -7,8 +7,8 @@ import SortBy from './components/SelectDateRange'
 const App = () => {
   const [posts, setPosts] = React.useState([])
   // new
-  // const [numUpVotes, setNumUpVotes] = React.useState(0)
-  // const [numDownVotes, setNumDownVotes] = React.useState(0)
+  const [numUpVotes, setNumUpVotes] = React.useState(0)
+  const [numDownVotes, setNumDownVotes] = React.useState(0)
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
     fetch('/api/posts')
@@ -103,13 +103,13 @@ const App = () => {
     })
   }
 
-  // const upVoteCounter = () => {
-  //   fetch(`/api/posts/`)
-  // }
+  const upVoteCounter = () => {
+    fetch(`/api/posts/`)
+  }
 
-  // const downVoteCounter = () => {
-  //   fetch(`/api/posts/`)
-  // }
+  const downVoteCounter = () => {
+    fetch(`/api/posts/`)
+  }
   // new
   // function upVoteCounter () {
   //   setNumUpVotes(this.numUpVotes)
@@ -123,10 +123,10 @@ const App = () => {
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
-      {/* <section id="voting">
+      <section id="voting">
         <p>Upvote Count:</p>
         <p>Downvote Count:</p>
-      </section> */}
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
