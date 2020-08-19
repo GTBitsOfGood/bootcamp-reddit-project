@@ -60,7 +60,7 @@ const Post = props => {
     <>
       <section className="post">
         <div className="arrows">
-          <button onClick={toggleUp} className="upSelect">↑</button>
+          <button onClick={toggleUp}>↑</button>
           <span className="center">
             {props.post.upVotes - props.post.downVotes}
           </span>
