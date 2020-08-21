@@ -28,19 +28,38 @@ module.exports.post = (req, res, next) => {
 }
 
 module.exports.index = (req, res, next) => {
-  Post.find()
-    .populate('comments')
-    .sort('-createdAt')
-    .then(posts => {
-      res.locals.data = { posts }
-      res.locals.status = 200
-      return next()
-    })
-    .catch(err => {
-      console.error(err)
-      res.locals.error = { error: err.message }
-      return next()
-    })
+  const dateRange = req.body.dateRange
+  var latestDate = req.body.currDate
+  var earliestDate = new Date("January 1, 1970")
+  
+  if (dateRange != null) {
+    if (dateRange == "Past week") {
+      earliestDate = currDate.getTime() - 1000*60*60*24*7
+    } else if (dateRange == "Past month") {
+      earliestDate = currDate.getTime() - 1000*60*60*24*31
+    } else if (dateRange == "Past year") {
+      earliestDate = currDate.getTime() - 1000*60*60*24*365
+    } else if (dateRange == "A year ago") {
+      currDate = currDate.getTime() - 1000*60*60*24*365
+    } else if (dateRange == "Ancient times") {
+      currDate = currDate.getTime() - 1000*60*60*24*365*10
+    }
+  }
+
+  Post.find({ "createdAt": { $gt: earliestDate, $lt: currDate }})
+  .populate('comments')
+  .sort('-createdAt')
+  .then(posts => {
+    res.locals.data = { posts }
+    res.locals.status = 200
+    return next()
+  })
+  .catch(err => {
+    console.error(err)
+    res.locals.error = { error: err.message }
+    return next()
+  })
+  
 }
 
 module.exports.get = (req, res, next) => {
