@@ -5,6 +5,8 @@ import './Post.css'
 
 const Post = props => {
   const [replyOpen, setReplyOpen] = React.useState(false)
+  const [numUpVotes, setNumUpVotes] = React.useState(0)
+  const [numDownVotes, setNumDownVotes] = React.useState(0)
 
   const toggleReply = () => setReplyOpen(!replyOpen)
 
@@ -13,15 +15,37 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  function clickUpVotes () {
+    if ((numUpVotes === 0) && (numDownVotes === 0)) {
+      setNumUpVotes(1)
+    } else if (numUpVotes === 1) {
+      setNumUpVotes(0)
+    } else if ((numUpVotes === 0) && (numDownVotes === 1)) {
+      setNumDownVotes(0)
+    }
+    props.upVoteCounter(numUpVotes, numDownVotes)
+  }
+
+  function clickDownVotes () {
+    if ((numDownVotes === 0) && (numUpVotes === 0)) {
+      setNumDownVotes(1)
+    } else if (numDownVotes === 1) {
+      setNumDownVotes(0)
+    } else if ((numDownVotes === 0) && (numUpVotes === 1)) {
+      setNumUpVotes(0)
+    }
+    props.downVoteCounter(numDownVotes, numDownVotes)
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={() => clickUpVotes()}>↑</button>
           <span className="center">
-            {props.post.upVotes - props.post.downVotes}
+            {(props.post.upVotes + numUpVotes) - (props.post.downVotes + numDownVotes)}
           </span>
-          <button>↓</button>
+          <button onClick={() => clickDownVotes()}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>

@@ -6,6 +6,9 @@ import SortBy from './components/SelectDateRange'
 
 const App = () => {
   const [posts, setPosts] = React.useState([])
+  // new
+  const [totNumUpVotes, setTotNumUpVotes] = React.useState([])
+  const [totNumDownVotes, setTotNumDownVotes] = React.useState([])
   const headers = { 'Content-Type': 'application/json' }
   const getPosts = () => {
     fetch('/api/posts')
@@ -100,9 +103,23 @@ const App = () => {
     })
   }
 
+  const upVoteCounter = (numUpVotes, numDownVotes) => {
+    setTotNumUpVotes([...totNumUpVotes, numUpVotes])
+    setTotNumDownVotes([...totNumDownVotes, numDownVotes])
+  }
+
+  const downVoteCounter = (numUpVotes, numDownVotes) => {
+    setTotNumUpVotes([...totNumUpVotes, numUpVotes])
+    setTotNumDownVotes([...totNumDownVotes, numDownVotes])
+  }
+
   return (
     <>
       <h1>Bits of Good Bootcamp -- Reddit</h1>
+      <section id="voting">
+        <p>Upvote Count: {totNumUpVotes}</p>
+        <p>Downvote Count: {totNumDownVotes}</p>
+      </section>
       <AddPost onSubmit={createPost} />
       <SortBy onSelect={getPostsByDate} />
       {posts.map(curr => (
@@ -115,6 +132,8 @@ const App = () => {
           onCommentDelete={deleteComment}
           onCommentEdit={editComment}
           onSubComment={createSubComment}
+          upVoteCounter={upVoteCounter}
+          downVoteCounter={downVoteCounter}
         />
       ))}
     </>
