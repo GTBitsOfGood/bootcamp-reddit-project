@@ -23,6 +23,7 @@ const Post = props => {
       props.post.upVotes += 1
       const center = document.querySelector(".center");
       center.style.color = "orange";
+      upSelected = true
       
     }
     else {
@@ -30,6 +31,7 @@ const Post = props => {
       if(!downVoteCurr){
         const center = document.querySelector(".center");
         center.style.color = "black";
+        upSelected = false
       }
     }
     if (downVoteCurr) {
@@ -43,12 +45,14 @@ const Post = props => {
       props.post.downVotes += 1
       const center = document.querySelector(".center");
       center.style.color = "blue";
+      downSelected = true
     }
     else {
       props.post.downVotes -= 1
       if(!upVoteCurr){
         const center = document.querySelector(".center");
         center.style.color = "black";
+        downSelected = false
       }
     }
     if (upVoteCurr) {
