@@ -13,15 +13,62 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  
+  const [upVoteCurr, statusUp] = React.useState(false)
+  const [downVoteCurr, statusDown] = React.useState(false)
+
+  const toggleUp = () => {
+    statusUp(!upVoteCurr)
+    if (!upVoteCurr) {
+      props.post.upVotes += 1
+      const center = document.querySelector(".center");
+      center.style.color = "orange";
+      upSelected = true
+      
+    }
+    else {
+      props.post.upVotes -= 1
+      if(!downVoteCurr){
+        const center = document.querySelector(".center");
+        center.style.color = "black";
+        upSelected = false
+      }
+    }
+    if (downVoteCurr) {
+      toggleDown()
+    }
+  }
+
+  const toggleDown = () => {
+    statusDown(!downVoteCurr)
+    if (!downVoteCurr) {
+      props.post.downVotes += 1
+      const center = document.querySelector(".center");
+      center.style.color = "blue";
+      downSelected = true
+    }
+    else {
+      props.post.downVotes -= 1
+      if(!upVoteCurr){
+        const center = document.querySelector(".center");
+        center.style.color = "black";
+        downSelected = false
+      }
+    }
+    if (upVoteCurr) {
+      toggleUp()
+    }
+  }
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
+          <button onClick={toggleUp}>↑</button>
           <span className="center">
             {props.post.upVotes - props.post.downVotes}
           </span>
-          <button>↓</button>
+          <button onClick={toggleDown}>↓</button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
