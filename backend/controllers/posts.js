@@ -1,7 +1,53 @@
 const { Post } = require('../models')
 
+
+module.exports.post = (req, res, next) => {
+  const date = new Date(req.body.createdAt)
+  const newPost = new Post ( 
+    {
+      "author": 'Sebastian', 
+      "title": 'Test Post', 
+      "text": 'Sample Body', 
+      "createdAt": date
+    }
+  )
+
+  newPost
+    .save()
+    .then(post => {
+      res.locals.data = { post }
+      res.locals.status = 201
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      res.locals.status = 400
+      return next()
+    })
+}
+
 module.exports.index = (req, res, next) => {
-  Post.find()
+
+  var dateRange = req.query.dateRange
+  var currDate = req.query.currDate
+  var latestDate = new Date(currDate)
+  var earliestDate = new Date("January 1, 1970")  
+
+  if (dateRange != null) {
+    if (dateRange === "Past week") {
+      earliestDate = new Date (latestDate.getTime() - 1000*60*60*24*7)
+    } else if (dateRange === "Past month") {
+      earliestDate = new Date (latestDate.getTime() - 1000*60*60*24*31)
+    } else if (dateRange === "Past year") {
+      earliestDate = new Date (latestDate.getTime() - 1000*60*60*24*365)
+    } else if (dateRange === "A year ago") {
+      latestDate = new Date (latestDate.getTime() - 1000*60*60*24*365)
+    } else if (dateRange === "Ancient times") {
+      latestDate = new Date (latestDate.getTime() - 1000*60*60*24*365*10)
+    }
+
+    Post.find({ "createdAt": { $lte: latestDate.toISOString(), $gte: earliestDate.toISOString()}})
     .populate('comments')
     .sort('-createdAt')
     .then(posts => {
@@ -14,6 +60,23 @@ module.exports.index = (req, res, next) => {
       res.locals.error = { error: err.message }
       return next()
     })
+
+  } else {
+    Post.find()
+    .populate('comments')
+    .sort('-createdAt')
+    .then(posts => {
+      res.locals.data = { posts }
+      res.locals.status = 200
+      return next()
+    })
+    .catch(err => {
+      console.error(err)
+      res.locals.error = { error: err.message }
+      return next()
+    })
+  }
+  
 }
 
 module.exports.get = (req, res, next) => {

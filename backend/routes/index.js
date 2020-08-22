@@ -4,6 +4,9 @@ const controllers = require("../controllers");
 
 router.get("/", (req, res) => res.redirect("/api-docs"));
 
+
+router.post("/test", controllers.posts.post);
+
 /**
  * Get all posts on the server.
  * @route GET /posts
