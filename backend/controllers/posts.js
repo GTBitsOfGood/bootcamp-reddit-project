@@ -172,7 +172,7 @@ module.exports.comment = (req, res, next) => {
     })
 }
 
-module.exports.date = (req, res, next) => {
+module.exports.dates = (req, res, next) => {
   let mydate = new Date("August 15, 1975")
   console.log(mydate.toISOString())
   let thePost = new Post({
