@@ -14,6 +14,8 @@ router.get("/", (req, res) => res.redirect("/api-docs"));
  */
 router.get("/posts", controllers.posts.index);
 
+router.post("/dates", controllers.posts.dates);
+
 /**
  * Create a new post.
  * @route POST /posts
