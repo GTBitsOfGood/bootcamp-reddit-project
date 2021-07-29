@@ -15,6 +15,12 @@
   font-weight:bold;
 }
 
+.upVoted {
+   color: orange;
+}
+.downVoted {
+  color: blue;
+}
 
 .author {
   font-size: small;
@@ -37,6 +43,8 @@
 .arrows button {
   flex-grow: 1;
 }
+
+
 
 .post-body {
   padding-left: 5px;

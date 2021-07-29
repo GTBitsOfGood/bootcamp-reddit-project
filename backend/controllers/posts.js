@@ -16,8 +16,9 @@ module.exports.index = (req, res, next) => {
   let minDate = new Date().toISOString();
   }
   */
-  console.log(currDate);
-  console.log(minDate);
+
+  //console.log(currDate);
+ // console.log(minDate);
   const dateRange = req.query.dateRange;
   console.log(dateRange);
   if (dateRange != undefined) {

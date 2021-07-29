@@ -13,15 +13,54 @@ const Post = props => {
     props.onComment(props.post._id, commentData)
   }
 
+  const [upButton, setUpButton] = React.useState(false);
+
+  const  onUp = () => {
+    setUpButton(!upButton);
+    if(upButton==false){
+      props.post.upVotes +=1;
+    
+   if (downButton==true) {
+     props.post.downVotes -= 1;
+    setDownButton(!downButton);
+   }
+    }
+    else{
+      props.post.upVotes -= 1;
+    }
+  }
+  const [downButton, setDownButton] = React.useState(false);
+
+  const onDown = () => {
+    setDownButton(!downButton);
+    if (downButton == false) {
+      props.post.downVotes += 1;
+      
+      if (upButton == true) {
+        props.post.upVotes -= 1;
+        setUpButton(!upButton);
+      }
+    } else {
+      props.post.downVotes -= 1;
+    }
+  };
+
   return (
     <>
       <section className="post">
         <div className="arrows">
-          <button>↑</button>
-          <span className="center">
+          <button className={upButton ? "upVoted" : "center"} onClick={onUp}>
+            ↑
+          </button>
+          <span className={upButton ? "upVoted":downButton ? "downVoted" : "center"}>
             {props.post.upVotes - props.post.downVotes}
           </span>
-          <button>↓</button>
+          <button
+            className={downButton ? "downVoted" : "center"}
+            onClick={onDown}
+          >
+            ↓
+          </button>
         </div>
         <div className="post-body">
           <div className="author">Posted by {props.post.author}</div>
@@ -42,7 +81,7 @@ const Post = props => {
         </div>
       </section>
       <section className="comments">
-        {props.post.comments.map(com => (
+        {props.post.comments.map((com) => (
           <Comment
             key={com._id}
             comment={com}
@@ -53,7 +92,7 @@ const Post = props => {
         ))}
       </section>
     </>
-  )
+  );
 }
 
 export default Post
