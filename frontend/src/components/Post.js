@@ -42,9 +42,10 @@ const Post = props => {
       }
     } else {
       props.post.downVotes -= 1;
+    
     }
   };
-
+ 
   return (
     <>
       <section className="post">
