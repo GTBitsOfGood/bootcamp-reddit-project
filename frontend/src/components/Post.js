@@ -1,50 +1,49 @@
-import React from 'react'
-import Comment from './Comment'
-import AddComment from './AddComment'
-import './Post.css'
+import React from "react";
+import Comment from "./Comment";
+import AddComment from "./AddComment";
+import "./Post.css";
 
-const Post = props => {
-  const [replyOpen, setReplyOpen] = React.useState(false)
+const Post = (props) => {
+  const [replyOpen, setReplyOpen] = React.useState(false);
 
-  const toggleReply = () => setReplyOpen(!replyOpen)
+  const toggleReply = () => setReplyOpen(!replyOpen);
 
-  const saveComment = commentData => {
-    setReplyOpen(false)
-    props.onComment(props.post._id, commentData)
-  }
+  const saveComment = (commentData) => {
+    setReplyOpen(false);
+    props.onComment(props.post._id, commentData);
+  };
 
   const [upButton, setUpButton] = React.useState(false);
 
-  const  onUp = () => {
+  const onUp = () => {
     setUpButton(!upButton);
-    if(upButton==false){
-      props.post.upVotes +=1;
-    
-   if (downButton==true) {
-     props.post.downVotes -= 1;
-    setDownButton(!downButton);
-   }
-    }
-    else{
+    if (upButton == false) {
+      props.post.upVotes += 1;
+
+      if (downButton == true) {
+        props.post.downVotes -= 1;
+        setDownButton(!downButton);
+      }
+    } else {
       props.post.upVotes -= 1;
     }
-  }
+  };
   const [downButton, setDownButton] = React.useState(false);
 
   const onDown = () => {
     setDownButton(!downButton);
     if (downButton == false) {
       props.post.downVotes += 1;
-      
+
       if (upButton == true) {
         props.post.upVotes -= 1;
         setUpButton(!upButton);
       }
     } else {
-      props.post.downVotes -= 1;
+      props.post.downVotes -= 2;
     }
   };
- 
+
   return (
     <>
       <section className="post">
@@ -52,7 +51,11 @@ const Post = props => {
           <button className={upButton ? "upVoted" : "center"} onClick={onUp}>
             ↑
           </button>
-          <span className={upButton ? "upVoted":downButton ? "downVoted" : "center"}>
+          <span
+            className={
+              upButton ? "upVoted" : downButton ? "downVoted" : "center"
+            }
+          >
             {props.post.upVotes - props.post.downVotes}
           </span>
           <button
@@ -93,6 +96,6 @@ const Post = props => {
       </section>
     </>
   );
-}
+};
 
-export default Post
+export default Post;
