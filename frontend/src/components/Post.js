@@ -42,7 +42,6 @@ const Post = props => {
       }
     } else {
       props.post.downVotes -= 1;
-    
     }
   };
  
