@@ -5,30 +5,34 @@ const postSchema = mongoose.Schema(
   {
     author: {
       type: String,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     text: {
       type: String,
-      required: true
+      required: true,
     },
     upVotes: {
       type: Number,
-      default: 0
+      default: 0,
     },
     downVotes: {
       type: Number,
-      default: 0
+      default: 0,
+    },
+    createdAt: {
+      type: Date,
+      default: new Date("July 28, 2021"),
     },
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment"
-      }
-    ]
+        ref: "Comment",
+      },
+    ],
   },
   { timestamps: true }
 );
