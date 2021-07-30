@@ -19,13 +19,15 @@ const Post = (props) => {
     setUpButton(!upButton);
     if (upButton == false) {
       props.post.upVotes += 1;
-
+      props.incrUpVotes();
       if (downButton == true) {
         props.post.downVotes -= 1;
+        props.decrDownVotes();
         setDownButton(!downButton);
       }
     } else {
       props.post.upVotes -= 1;
+      props.decrUpVotes();
     }
   };
   const [downButton, setDownButton] = React.useState(false);
@@ -34,13 +36,15 @@ const Post = (props) => {
     setDownButton(!downButton);
     if (downButton == false) {
       props.post.downVotes += 1;
-
+      props.incrDownVotes();
       if (upButton == true) {
         props.post.upVotes -= 1;
+        props.decrUpVotes();
         setUpButton(!upButton);
       }
     } else {
-      props.post.downVotes -= 2;
+      props.post.downVotes -= 1;
+      props.decrDownVotes();
     }
   };
 
