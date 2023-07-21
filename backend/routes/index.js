@@ -12,6 +12,15 @@ router.get("/", (req, res) => res.redirect("/api-docs"));
  * @returns {ApiResponseMultiplePosts.model} 200 - An array of posts
  * @returns {ApiResponseError.model}  500 - Unexpected error in the backend...
  */
+
+const postsLogic = (req, res, err) => {
+  res.sendStatus(200)
+}
+
+router.get(postsLogic)
+
+router.post(postsLogic)
+
 router.get("/posts", controllers.posts.index);
 
 /**
